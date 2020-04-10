@@ -7,9 +7,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TripsPage implements OnInit {
 
+  showSearchBar = false;
+  showFilter = false;
+  selectedCountry = 'all';
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ionViewDidLeave() {
+    this.showSearchBar = false;
+    this.showFilter = false;
+  }
+
+  toggleSearchBar(){
+    this.showSearchBar = !this.showSearchBar;
+    this.showFilter = false;
+  }
+
+  toggleFilter(){
+    this.showFilter = !this.showFilter;
+    this.showSearchBar = false;
   }
 
 }
