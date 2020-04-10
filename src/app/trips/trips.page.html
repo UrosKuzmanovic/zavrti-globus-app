@@ -2,9 +2,121 @@
   <ion-toolbar>
     <ion-menu-button slot="start"></ion-menu-button>
     <ion-title>Sva putovanja</ion-title>
+    <ion-icon name="filter-outline" slot="end" class="ion-padding" style="font-size: 3vh;" (click)="toggleFilter()">
+    </ion-icon>
+    <ion-icon name="search-outline" slot="end" class="ion-padding" style="font-size: 3vh;" (click)="toggleSearchBar()">
+    </ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-searchbar placeholder="Pretraži grad" (ionChange)="onSearchChange($event)" *ngIf="showSearchBar"></ion-searchbar>
+
+  <ion-item *ngIf="showFilter">
+    <ion-label>Filtriraj po državi</ion-label>
+    <ion-select interface="popover" [(ngModel)]="selectedCountry">
+      <ion-select-option value="all">Sve države</ion-select-option>
+      <ion-select-option value="spa">Španija</ion-select-option>
+      <ion-select-option value="ger">Nemačka</ion-select-option>
+      <ion-select-option value="ita">Italija</ion-select-option>
+      <ion-select-option value="chi">Kina</ion-select-option>
+      <ion-select-option value="egy">Egipat</ion-select-option>
+      <ion-select-option value="gre">Grčka</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-card routerLink="/trips/trip">
+    <ion-item>
+      <ion-thumbnail>
+        <img src="../../assets/img/trips/1.jpg" />
+      </ion-thumbnail>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-title class="ion-padding-start">Mongolija</ion-title>
+          </ion-col>
+          <ion-col offset="1">
+            <ion-title class="ion-no-padding text-price">300e</ion-title>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-text class="ion-padding-start">20-31. maj 2020.</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+    </ion-item>
+  </ion-card>
+
+  <ion-card routerLink="/trips/trip">
+    <ion-item>
+      <ion-thumbnail>
+        <img src="../../assets/img/trips/2.jpg" />
+      </ion-thumbnail>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col>
+            <ion-title class="ion-padding-start">Faro</ion-title>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-text class="ion-padding-start">4-11. jun 2020.</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+    </ion-item>
+  </ion-card>
+
+  <ion-card routerLink="/trips/trip">
+    <ion-item>
+      <ion-thumbnail>
+        <img src="../../assets/img/trips/3.jpg" />
+      </ion-thumbnail>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col>
+            <ion-title class="ion-padding-start">Prag</ion-title>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-text class="ion-padding-start">28-31. mart 2020.</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+    </ion-item>
+  </ion-card>
+
+  <ion-card routerLink="/trips/trip">
+    <ion-item>
+      <ion-thumbnail>
+        <img src="../../assets/img/trips/1.jpg" />
+      </ion-thumbnail>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="8">
+            <ion-row>
+              <ion-col>
+                <ion-title class="ion-no-padding">Mongolija</ion-title>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-text class="ion-no-padding">20-31. maj 2020.</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="4" class="col-price">
+            <ion-title class="ion-no-padding text-price"><strong>650e</strong></ion-title>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-icon name="chevron-forward-outline" slot="end" class="ion-no-margin"></ion-icon>
+    </ion-item>
+  </ion-card>
 
 </ion-content>
