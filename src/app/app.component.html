@@ -1,3 +1,93 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu slot="start" menuId="main-menu" contentId="main">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Zavrti globus</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item routerLink="/home">
+            <ion-icon name="home-outline" slot="start"></ion-icon>Početna
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item *ngIf="logged" routerLink="/profile">
+            <ion-icon name="person-outline" slot="start"></ion-icon>Moj profil
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="/trips">
+            <ion-icon name="earth-outline" slot="start"></ion-icon>Sva putovanja
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item *ngIf="logged" routerLink="/trips/my-trips">
+            <ion-icon name="briefcase-outline" slot="start"></ion-icon>Moja putovanja
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="/inquiries/new-inquiry">
+            <ion-icon name="mail-open-outline" slot="start"></ion-icon>Pošalji upit
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="/settings">
+            <ion-icon name="settings-outline" slot="start"></ion-icon>Podešavanja
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="/terms-of-use">
+            <ion-icon name="document-text-outline" slot="start"></ion-icon>Uslovi korišćenja
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item routerLink="/about">
+            <ion-icon name="help-circle-outline" slot="start"></ion-icon>O nama
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item *ngIf="!logged" routerLink="/auth">
+            <ion-icon name="log-in-outline" slot="start"></ion-icon>Uloguj se
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item *ngIf="logged"  routerLink="/auth">
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>Izloguj se
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+      <div *ngIf="admin">
+        <ion-toolbar>
+          <ion-title>Administrator</ion-title>
+        </ion-toolbar>
+        <ion-list>
+          <ion-menu-toggle>
+            <ion-item routerLink="/trips/trip/new-trip">
+              <ion-icon name="add-outline" slot="start"></ion-icon>Unesi novo putovanje
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle>
+            <ion-item routerLink="/inquiries">
+              <ion-icon name="eye-outline" slot="start"></ion-icon>Pregled poslatih upita
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </div>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="3" offset="2">
+            <ion-icon name="logo-facebook" class="ion-padding snetwork-icons"></ion-icon>
+          </ion-col>
+          <ion-col size="3" offset="2">
+            <ion-icon name="logo-instagram" class="ion-padding snetwork-icons"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
