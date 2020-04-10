@@ -1,0 +1,8 @@
+{
+  "appId": "com.zavrtiglobus",
+  "appName": "zavrti-globus-ionic",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

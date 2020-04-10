@@ -1,5 +1,7 @@
 {
   "name": "zavrti-globus-ionic",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
