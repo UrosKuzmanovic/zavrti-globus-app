@@ -2,6 +2,9 @@
   <ion-menu slot="start" menuId="main-menu" contentId="main">
     <ion-header>
       <ion-toolbar>
+        <!-- <ion-menu-toggle>
+          <ion-icon name="close-outline" slot="start" style="font-size: 4vh;" class="ion-padding"></ion-icon>
+        </ion-menu-toggle> -->
         <ion-title>Zavrti globus</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -54,7 +57,7 @@
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle>
-          <ion-item *ngIf="logged"  routerLink="/auth">
+          <ion-item *ngIf="logged" routerLink="/auth">
             <ion-icon name="log-out-outline" slot="start"></ion-icon>Izloguj se
           </ion-item>
         </ion-menu-toggle>
@@ -78,11 +81,13 @@
       </div>
       <ion-grid fixed>
         <ion-row>
-          <ion-col size="3" offset="2">
-            <ion-icon name="logo-facebook" class="ion-padding snetwork-icons"></ion-icon>
+          <ion-col size="3" offset="2"><a href="https://www.facebook.com/Zavrti-globus-523303154863234">
+              <ion-icon name="logo-facebook" class="ion-padding snetwork-icons"></ion-icon>
+            </a>
           </ion-col>
-          <ion-col size="3" offset="2">
-            <ion-icon name="logo-instagram" class="ion-padding snetwork-icons"></ion-icon>
+          <ion-col size="3" offset="2"><a href="https://www.instagram.com/zavrtiglobus/">
+              <ion-icon name="logo-instagram" class="ion-padding snetwork-icons"></ion-icon>
+            </a>
           </ion-col>
         </ion-row>
       </ion-grid>
