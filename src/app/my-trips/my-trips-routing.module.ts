@@ -27,7 +27,17 @@ const routes: Routes = [
             loadChildren: () => import('../booked-trips/booked-trips.module').then(m => m.BookedTripsPageModule)
           }
         ]
-      }, 
+      },
+      {
+        path: 'inquiry-trips',
+        children: [
+          {
+            path: '',
+            // loadChildren: '../booked-trips/booked-trips.module#BookedTripsPageModule'
+            loadChildren: () => import('../inquiry-trips/inquiry-trips.module').then(m => m.InquiryTripsPageModule)
+          }
+        ]
+      },
       {
         path: '',
         redirectTo: '/trips/my-trips/tabs/favorite-trips',

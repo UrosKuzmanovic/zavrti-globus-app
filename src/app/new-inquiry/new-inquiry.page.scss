@@ -1,0 +1,13 @@
+// .error-msg {
+//   font-size: 2vh;
+//   color: var(--ion-color-danger);
+//   margin: 0;
+// }
+
+.item-interactive.item-has-focus {
+  --highlight-background: none;
+}
+
+.item-interactive.item-has-focus ion-label {
+  color: black;
+}
