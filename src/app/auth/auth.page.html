@@ -1,10 +1,62 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <form #f="ngForm">
+    <div class="auth-style">
+      <ion-img
+        src="https://scontent.fbeg4-1.fna.fbcdn.net/v/t1.0-9/56675138_525639671296249_6433524833727807488_n.jpg?_nc_cat=110&_nc_sid=85a577&_nc_eui2=AeHSBPYQmhKKdiVMfMrB1obAptGwjS16gHim0bCNLXqAeOxBye7OYVZDQ0eZ0dQ4w_0&_nc_ohc=8xeP0AWH14gAX-xdcZE&_nc_ht=scontent.fbeg4-1.fna&oh=0bc183b69b168524d8e47bff1b139e65&oe=5F61A4CD">
+      </ion-img>
+      <div class="auth-input-style">
+        <div *ngIf="isLogin">
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="text" name="email" ngModel required
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"></ion-input>
+          </ion-item>
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">Šifra</ion-label>
+            <ion-input type="password" name="password" ngModel required minlength="8"></ion-input>
+          </ion-item>
+        </div>
+        <div *ngIf="!isLogin">
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">Ime</ion-label>
+            <ion-input type="text" name="firstName" ngModel required></ion-input>
+          </ion-item>
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">Prezime</ion-label>
+            <ion-input type="text" name="lastName" ngModel required></ion-input>
+          </ion-item>
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" name="email" ngModel required
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"></ion-input>
+          </ion-item>
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">Šifra</ion-label>
+            <ion-input type="password" name="password" ngModel required minlength="8"></ion-input>
+            <ion-icon name="information-circle-outline" slot="end" style="margin-top: 3vh;"
+              (click)="showPasswordHelp()"></ion-icon>
+          </ion-item>
+          <ion-item class="auth-input-item-style">
+            <ion-label position="floating">Potvrdi šifru</ion-label>
+            <ion-input type="password" name="confirmPassword" ngModel required minlength="8"></ion-input>
+          </ion-item>
+          <ion-item class="auth-input-item-style" style="padding-top: 2vh;">
+            <ion-label>Datum rođenja</ion-label>
+            <ion-datetime display-format="DD.MM.YYYY" name="dateOfBirth" ngModel required></ion-datetime>
+          </ion-item>
+        </div>
+        <div class="auth-button-style">
+          <ion-button type="submit" (click)="onSubmit(f)" class="auth-input-item-style" [disabled]="!f.valid">
+            {{ isLogin ? "Uloguj se" : "Registruj se" }}
+          </ion-button>
+          <ion-button type="button" class="auth-input-item-style" fill="clear" (click)="isLogin=!isLogin">
+            {{ isLogin ? "Nemaš nalog?" : "Imaš nalog?" }}
+          </ion-button>
+          <ion-button type="button" class="auth-input-item-style" fill="clear" (click)="loginGuest()">
+            Nastavi kao gost
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </form>
 </ion-content>

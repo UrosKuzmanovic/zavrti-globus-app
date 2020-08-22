@@ -14,6 +14,7 @@
 
   <ion-item *ngIf="showFilter">
     <ion-label>Filtriraj po državi</ion-label>
+    <!-- treba da ucita drzave iz baze -->
     <ion-select interface="popover" [(ngModel)]="selectedCountry">
       <ion-select-option value="all">Sve države</ion-select-option>
       <ion-select-option value="spa">Španija</ion-select-option>

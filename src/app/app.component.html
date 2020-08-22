@@ -32,7 +32,7 @@
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle>
-          <ion-item routerLink="/inquiries/new-inquiry">
+          <ion-item *ngIf="logged" routerLink="/inquiries/new-inquiry">
             <ion-icon name="mail-open-outline" slot="start"></ion-icon>Pošalji upit
           </ion-item>
         </ion-menu-toggle>
@@ -57,7 +57,7 @@
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle>
-          <ion-item *ngIf="logged" routerLink="/auth">
+          <ion-item *ngIf="logged" (click)="logout()">
             <ion-icon name="log-out-outline" slot="start"></ion-icon>Izloguj se
           </ion-item>
         </ion-menu-toggle>

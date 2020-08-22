@@ -5,6 +5,7 @@ import { Trip } from "../models/trip.model";
 import { TripService } from "./trip.service";
 import { Subscription } from "rxjs";
 import { FavoriteTripsService } from "../favorite-trips/favorite-trips.service";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: "app-trip",
@@ -12,6 +13,7 @@ import { FavoriteTripsService } from "../favorite-trips/favorite-trips.service";
   styleUrls: ["./trip.page.scss"],
 })
 export class TripPage implements OnInit, OnDestroy {
+  isLogged = false;
   favorite = false;
   desc =
     "Aranžman ne uključuje:\n•Transfer aerodrom-hotel-aerodrom.\n---------------------------------------------\nCena aranžmana formirana je na dan objavljivanja ponude.\n\nZa sve nedoumice, pitanja i prijave javite nam se privatnom porukom ili na mail zavrtiglobus@gmail.com";
@@ -27,7 +29,8 @@ export class TripPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCrtl: NavController,
     private tripService: TripService,
-    private favoriteTripsService: FavoriteTripsService
+    private favoriteTripsService: FavoriteTripsService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -42,8 +45,10 @@ export class TripPage implements OnInit, OnDestroy {
         .subscribe((trip) => {
           this.trip = trip;
           console.log(trip);
-          
         });
+      this.authService.userIsAuthenticated.subscribe((isLogged) => {
+        this.isLogged = isLogged;
+      });
       this.favSub = this.tripService
         .chechFavorite(this.user, this.tripID)
         .subscribe((data) => {

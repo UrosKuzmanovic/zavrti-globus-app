@@ -4,10 +4,12 @@
             <ion-back-button defaultHref="trips"></ion-back-button>
         </ion-buttons>
         <ion-title>Putovanje</ion-title>
-        <ion-icon name="bookmark-outline" slot="end" style="font-size: 4vh;" class="ion-padding" *ngIf="!favorite"
-            (click)="addToFavorites()"></ion-icon>
-        <ion-icon name="bookmark" slot="end" style="font-size: 4vh;" class="ion-padding" *ngIf="favorite"
-            (click)="removeFromFavorites()"></ion-icon>
+        <div *ngIf="isLogged">
+            <ion-icon name="bookmark-outline" slot="end" style="font-size: 4vh;" class="ion-padding" *ngIf="!favorite"
+                (click)="addToFavorites()"></ion-icon>
+            <ion-icon name="bookmark" slot="end" style="font-size: 4vh;" class="ion-padding" *ngIf="favorite"
+                (click)="removeFromFavorites()"></ion-icon>
+        </div>
     </ion-toolbar>
 </ion-header>
 

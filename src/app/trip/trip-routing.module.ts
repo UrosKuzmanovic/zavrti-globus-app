@@ -4,10 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TripPage } from './trip.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: TripPage
-  },
+  
   {
     path: 'new-trip',
     loadChildren: () => import('../trip/new-trip/new-trip.module').then( m => m.NewTripPageModule)
@@ -15,7 +12,11 @@ const routes: Routes = [
   {
     path: 'edit-trip',
     loadChildren: () => import('../trip/edit-trip/edit-trip.module').then( m => m.EditTripPageModule)
-  }
+  },
+  {
+    path: ':tripID',
+    component: TripPage
+  },
 ];
 
 @NgModule({
