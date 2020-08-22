@@ -56,7 +56,7 @@ export class TripService {
               fetchedTrip.firstName,
               fetchedTrip.lastName,
               null,
-              fetchedTrip.admin
+              fetchedTrip.role
             )
           );
         }),

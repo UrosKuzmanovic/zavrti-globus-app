@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { TripsService } from "./trips.service";
 import { Subscription } from "rxjs";
-import { Trip } from '../models/trip.model';
+import { Trip } from "../models/trip.model";
 
 @Component({
   selector: "app-trips",
@@ -11,6 +11,7 @@ import { Trip } from '../models/trip.model';
 })
 export class TripsPage implements OnInit, OnDestroy {
   trips: Trip[];
+  tripsCopy: Trip[];
   private tripsSub: Subscription;
 
   showSearchBar = false;
@@ -23,6 +24,7 @@ export class TripsPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.tripsSub = this.tripsService.trips.subscribe((trips) => {
       this.trips = trips;
+      this.tripsCopy = trips;
     });
   }
 
@@ -110,5 +112,13 @@ export class TripsPage implements OnInit, OnDestroy {
       default:
         return "null";
     }
+  }
+
+  onSearchChange($event) {
+    this.trips = this.tripsCopy;
+    const search: string = $event.detail.value;
+    this.trips = this.trips.filter(
+      (trip) => trip.city.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
   }
 }

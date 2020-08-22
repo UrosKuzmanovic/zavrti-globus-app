@@ -21,6 +21,6 @@ export class FetchedTrip{
         public userID: number,
         public firstName: string,
         public lastName: string,
-        public admin: number,
+        public role: string,
     ){}
 }

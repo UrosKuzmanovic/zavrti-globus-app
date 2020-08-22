@@ -10,7 +10,7 @@ const routes: Routes = [
     component: TripsPage
   },
   {
-    path: 'trip/:tripID',
+    path: 'trip',
     loadChildren: () => import('../trip/trip.module').then( m => m.TripPageModule)
   },
   {

@@ -6,6 +6,8 @@ export class User{
         public firstName: string,
         public lastName: string,
         public dateOfBirth: Date,
-        public admin: number
+        public role: string
     ){}
+
+    // get token(){}
 }
