@@ -6,6 +6,10 @@ import { TripPage } from './trip.page';
 const routes: Routes = [
   
   {
+    path: 'new-trip/:tripID',
+    loadChildren: () => import('../trip/new-trip/new-trip.module').then( m => m.NewTripPageModule)
+  },
+  {
     path: 'new-trip',
     loadChildren: () => import('../trip/new-trip/new-trip.module').then( m => m.NewTripPageModule)
   },

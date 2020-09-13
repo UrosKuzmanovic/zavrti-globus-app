@@ -1,10 +1,92 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>Unesi novo putovanje</ion-title>
+    <ion-title>{{ trip.tripID ? trip.city : 'Unesi novo putovanje'}}</ion-title>
+    <!-- <ion-icon name="checkmark-outline" slot="end" style="font-size: 4vh;" class="ion-padding"></ion-icon> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div>
+    <form #form="ngForm">
+      <div class="auth-style">
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Grad</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.city" name="city" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Država</ion-label>
+          <ion-select [(ngModel)]="trip.country.countryID" interface="action-sheet" name="country" ngModel required>
+            <ion-select-option *ngFor="let country of countries" [value]="country.countryID">{{ country.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+            <ion-col size="6">
+              <ion-item class="auth-input-item-style">
+                <ion-label position="floating">Datum putovanja</ion-label>
+                <ion-datetime display-format="DD MMM YYYY" [(ngModel)]="dateFrom" name="travelDate" ngModel required>
+                </ion-datetime>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item class="auth-input-item-style">
+                <ion-label position="floating">Datum povratka</ion-label>
+                <ion-datetime display-format="DD MMM YYYY" [(ngModel)]="dateTo" name="returnDate" ngModel required>
+                </ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Cena</ion-label>
+          <ion-input type="number" [(ngModel)]="trip.price" name="price" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Hotel</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.hotel" name="hotel" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Aerodrom</ion-label>
+          <ion-select [(ngModel)]="trip.airport.airportID" interface="action-sheet" name="airport" ngModel required>
+            <ion-select-option *ngFor="let airport of airports" [value]="airport.airportID">{{ airport.airportName }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Prtljag</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.baggage" name="baggage" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Obrok</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.meal" name="meal" ngModel></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Citat</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.quote" name="quote" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Autor</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.author" name="author" ngModel required></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Opis</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.description" name="description" ngModel></ion-input>
+        </ion-item>
+        <ion-item class="auth-input-item-style">
+          <ion-label position="floating">Link slike</ion-label>
+          <ion-input type="text" [(ngModel)]="trip.imageSrc" name="imageSrc" ngModel required></ion-input>
+        </ion-item>
+        <div class="auth-button-style">
+          <ion-button type="submit" (click)="onSubmit(form)" class="auth-input-item-style" [disabled]="!form.valid">
+            {{ trip.tripID ? 'Izmeni putovanje' : 'Unesi putovanje' }}
+          </ion-button>
+          <ion-button type="button" class="auth-input-item-style" fill="clear" (click)="clearFields()">
+            Očisti sva polja
+          </ion-button>
+        </div>
+      </div>
+    </form>
+  </div>
 </ion-content>

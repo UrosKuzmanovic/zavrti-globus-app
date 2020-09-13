@@ -27,6 +27,8 @@ export class AuthService {
     return this._user.asObservable().pipe(
       map((user) => {
         if (user) {
+          console.log(user);
+          
           return user.userID;
         } else {
           return null;
@@ -95,12 +97,12 @@ export class AuthService {
   private setUserData(userData: User[]) {
     this._user.next(
       new User(
-        userData[0].userID,
+        userData[0].userid,
         userData[0].email,
         userData[0].password,
-        userData[0].firstName,
-        userData[0].lastName,
-        userData[0].dateOfBirth,
+        userData[0].firstname,
+        userData[0].lastname,
+        userData[0].dateofbirth,
         userData[0].role
       )
     );

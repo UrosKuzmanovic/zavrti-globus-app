@@ -14,20 +14,22 @@ import { AuthService } from "../auth/auth.service";
 })
 export class TripPage implements OnInit, OnDestroy {
   isLogged = false;
+  isAdmin = false;
   favorite = false;
   desc =
     "Aranžman ne uključuje:\n•Transfer aerodrom-hotel-aerodrom.\n---------------------------------------------\nCena aranžmana formirana je na dan objavljivanja ponude.\n\nZa sve nedoumice, pitanja i prijave javite nam se privatnom porukom ili na mail zavrtiglobus@gmail.com";
   tripID: number;
   trip: Trip;
-  user = 1;
   defaultImgSrc = "../../assets/img/trips/1.jpg";
+  temperature: number;
+  weatherIcon: string;
 
   tripSub: Subscription;
   favSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private navCrtl: NavController,
+    private navCtrl: NavController,
     private tripService: TripService,
     private favoriteTripsService: FavoriteTripsService,
     private authService: AuthService
@@ -36,7 +38,7 @@ export class TripPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has("tripID")) {
-        this.navCrtl.navigateBack("/trips");
+        this.navCtrl.navigateBack("/trips");
         return;
       }
       this.tripID = +paramMap.get("tripID");
@@ -45,17 +47,26 @@ export class TripPage implements OnInit, OnDestroy {
         .subscribe((trip) => {
           this.trip = trip;
           console.log(trip);
+          this.tripService.getWeather(this.trip.city).subscribe((weather) => {
+            console.log(weather);
+            //this.temperature = Math.round(weather.main.temp);
+            //this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+          });
         });
       this.authService.userIsAuthenticated.subscribe((isLogged) => {
         this.isLogged = isLogged;
       });
-      this.favSub = this.tripService
-        .chechFavorite(this.user, this.tripID)
+      this.authService.userID.subscribe(userID => {
+        this.favSub = this.tripService
+        .chechFavorite(userID, this.tripID)
         .subscribe((data) => {
           if (data != null) this.favorite = true;
           else this.favorite = false;
-          console.log(this.favorite);
         });
+        this.authService.userIsAdmin.subscribe(isAdmin => {
+          this.isAdmin = isAdmin;
+        })
+      });
     });
   }
 
@@ -129,20 +140,26 @@ export class TripPage implements OnInit, OnDestroy {
   }
 
   addToFavorites() {
-    this.tripService.addToFavorites(this.user, this.tripID).subscribe(() => {
-      this.favorite = true;
-      // this.favoriteTripsService.getFavorites(this.user);
-      this.favoriteTripsService.getFavorites(this.user).subscribe();
+    this.authService.userID.subscribe((userID) => {
+      this.tripService.addToFavorites(userID, this.tripID).subscribe(() => {
+        this.favorite = true;
+        this.favoriteTripsService.getFavorites(userID).subscribe();
+      });
     });
   }
 
   removeFromFavorites() {
-    this.tripService
-      .removeFromFavorites(this.user, this.tripID)
+    this.authService.userID.subscribe(userID => {
+      this.tripService
+      .removeFromFavorites(userID, this.tripID)
       .subscribe(() => {
         this.favorite = false;
-        // this.favoriteTripsService.getFavorites(this.user);
-        this.favoriteTripsService.getFavorites(this.user).subscribe();
+        this.favoriteTripsService.getFavorites(userID).subscribe();
       });
+    })
+  }
+
+  editTrip() {
+    this.navCtrl.navigateForward(`/trips/trip/new-trip/${this.tripID}`);
   }
 }

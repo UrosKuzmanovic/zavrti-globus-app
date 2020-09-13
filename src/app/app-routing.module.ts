@@ -30,7 +30,7 @@ const routes: Routes = [
     path: "inquiries",
     loadChildren: () =>
       import("./inquiries/inquiries.module").then((m) => m.InquiriesPageModule),
-    canLoad: [AuthGuard, AdminGuard],
+    canLoad: [AuthGuard],
   },
   {
     path: "settings",

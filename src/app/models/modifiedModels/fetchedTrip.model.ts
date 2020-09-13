@@ -7,6 +7,7 @@ export class FetchedTrip{
         public price: number,
         public travelDate: Date,
         public returnDate: Date,
+        public postDate: Date,
         public airportID: number,
         public airportName: string,
         public baggage: string,

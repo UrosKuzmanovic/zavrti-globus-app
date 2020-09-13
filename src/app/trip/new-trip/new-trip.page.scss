@@ -1,0 +1,40 @@
+.auth-style {
+    width: 90vw;
+    display: block;
+    margin: 0vh auto;
+  }
+  
+  .auth-input-style {
+    margin: 0vh auto;
+  }
+  
+  .auth-input-item-style {
+    padding-top: 1vh;
+  }
+  
+  .auth-button-style {
+    margin-top: 3vh;
+  }
+  
+  ion-img {
+    width: 40vw;
+    display: block;
+    margin: auto;
+  }
+  
+  ion-button {
+    display: block;
+    margin: auto;
+    width: 80%;
+    height: 7vh;
+    padding-top: 1vh;
+  }
+  
+  .item-interactive.item-has-focus {
+    --highlight-background: none;
+  }
+  
+  .item-interactive.item-has-focus ion-label {
+    color: black;
+  }
+  

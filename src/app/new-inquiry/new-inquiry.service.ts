@@ -5,6 +5,7 @@ import { tap, map } from "rxjs/operators";
 import { Country } from "../models/country.model";
 import { FetchedCountries } from "../models/modifiedModels/fetchedCountries.model";
 import { Continent } from "../models/continent.model";
+import { Airport } from "../models/airport.model";
 
 @Injectable({
   providedIn: "root",
@@ -58,4 +59,5 @@ export class NewInquiryService {
         })
       );
   }
+
 }

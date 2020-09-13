@@ -1,4 +1,5 @@
 export class User{
+    [x: string]: any;
     constructor(
         public userID: number,
         public email: string,

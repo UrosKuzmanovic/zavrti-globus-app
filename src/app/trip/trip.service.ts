@@ -32,13 +32,13 @@ export class TripService {
             new Country(
               fetchedTrip.countryID,
               fetchedTrip.countryName,
-              null,                                                                     // treba staviti kontinent
-              null                                                                      // treba staviti zastavu
+              null, // treba staviti kontinent
+              null // treba staviti zastavu
             ),
             fetchedTrip.price,
             new Date(fetchedTrip.travelDate),
             new Date(fetchedTrip.returnDate),
-            null,                                                                       // treba staviti postDate
+            null, // treba staviti postDate
             new Airport(fetchedTrip.airportID, fetchedTrip.airportName),
             fetchedTrip.baggage,
             fetchedTrip.hotel,
@@ -105,6 +105,12 @@ export class TripService {
       {
         headers: { "Content-Type": "application/json" },
       }
+    );
+  }
+
+  getWeather(city: string) {
+    return this.http.get(
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=7ce886f7244f0f10b2adb7f8841dab38&units=metric&lang=sr`
     );
   }
 }

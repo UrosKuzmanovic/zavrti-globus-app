@@ -36,11 +36,11 @@ export class AppComponent {
     });
     this.loggedSub = this.authService.userIsAuthenticated.subscribe(logged => {
       console.log(`Logovan je ${logged}`);
-      this.logged = true;
+      this.logged = logged;
     })
     this.adminSub = this.authService.userIsAdmin.subscribe(admin => {
       console.log(`Admin je ${admin}`);
-      this.admin = true;
+      this.admin = admin;
     })
   }
 
