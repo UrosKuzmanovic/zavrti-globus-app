@@ -6,6 +6,7 @@ import { Country } from "../models/country.model";
 import { FetchedCountries } from "../models/modifiedModels/fetchedCountries.model";
 import { Continent } from "../models/continent.model";
 import { Airport } from "../models/airport.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -18,7 +19,7 @@ export class NewInquiryService {
 
     return this.http
       .post(
-        "http://localhost:5000/api/trips/new-inquiry",
+        `http://${environment.ip_adress}:${environment.port}/api/trips/new-inquiry`,
         {
           city: trip.city,
           countryID: trip.country.countryID,
@@ -38,7 +39,9 @@ export class NewInquiryService {
 
   fetchCountries() {
     return this.http
-      .get<FetchedCountries[]>(`http://localhost:5000/api/countries`)
+      .get<FetchedCountries[]>(
+        `http://${environment.ip_adress}:${environment.port}/api/countries`
+      )
       .pipe(
         map((fetchedCountries) => {
           const countries: Country[] = [];
@@ -59,5 +62,4 @@ export class NewInquiryService {
         })
       );
   }
-
 }

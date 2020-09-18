@@ -6,6 +6,7 @@ import { BehaviorSubject } from "rxjs";
 import { take, filter, map, tap } from "rxjs/operators";
 import { Trip } from "../models/trip.model";
 import { Country } from "../models/country.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -65,7 +66,7 @@ export class TripsService {
   fetchTrips() {
     return this.http
       .get<{ [key: number]: ListedTrip }>(
-        "http://localhost:5000/api/trips/listedtrips"
+        `http://${environment.ip_adress}:${environment.port}/api/trips/listedtrips`
       )
       .pipe(
         map((fetchedTrip) => {
@@ -79,13 +80,13 @@ export class TripsService {
                   new Country(
                     fetchedTrip[key].countryID,
                     fetchedTrip[key].countryName,
-                    null,                                                   // treba staviti kontinent
-                    null                                                    // treba staviti zastavu
+                    null, // treba staviti kontinent
+                    null // treba staviti zastavu
                   ),
                   fetchedTrip[key].price,
                   new Date(fetchedTrip[key].travelDate),
                   new Date(fetchedTrip[key].returnDate),
-                  null,                                                     // treba staviti postDate
+                  null, // treba staviti postDate
                   null,
                   null,
                   null,

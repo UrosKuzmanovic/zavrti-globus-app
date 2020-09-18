@@ -8,6 +8,7 @@ import { Airport } from "src/app/models/airport.model";
 import { User } from "src/app/models/user.model";
 import { FetchedCountries } from "src/app/models/modifiedModels/fetchedCountries.model";
 import { Continent } from "src/app/models/continent.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +18,9 @@ export class NewTripService {
 
   fetchTripByID(id: number) {
     return this.http
-      .get<FetchedTrip>(`http://localhost:5000/api/trips/trip/${id}`)
+      .get<FetchedTrip>(
+        `http://${environment.ip_adress}:${environment.port}/api/trips/trip/${id}`
+      )
       .pipe(
         map((fetchedTrip) => {
           return new Trip(
@@ -59,7 +62,9 @@ export class NewTripService {
 
   fetchCountries() {
     return this.http
-      .get<FetchedCountries[]>(`http://localhost:5000/api/countries`)
+      .get<FetchedCountries[]>(
+        `http://${environment.ip_adress}:${environment.port}/api/countries`
+      )
       .pipe(
         map((fetchedCountries) => {
           const countries: Country[] = [];
@@ -82,70 +87,71 @@ export class NewTripService {
   }
 
   fetchAirports() {
-    return this.http.get<Airport[]>(`http://localhost:5000/api/airports`).pipe(
-      map((fetchedAirports) => {
-        const airports: Airport[] = [];
-        fetchedAirports.forEach((fetchedAirport) => {
-          airports.push(fetchedAirport);
-        });
-        return airports;
-      })
+    return this.http
+      .get<Airport[]>(
+        `http://${environment.ip_adress}:${environment.port}/api/airports`
+      )
+      .pipe(
+        map((fetchedAirports) => {
+          const airports: Airport[] = [];
+          fetchedAirports.forEach((fetchedAirport) => {
+            airports.push(fetchedAirport);
+          });
+          return airports;
+        })
+      );
+  }
+
+  insertTrip(trip: Trip) {
+    return this.http.post(
+      `http://${environment.ip_adress}:${environment.port}/api/trips/new-trip`,
+      {
+        city: trip.city,
+        countryID: trip.country.countryID,
+        price: trip.price,
+        travelDate: trip.travelDate,
+        returnDate: trip.returnDate,
+        postDate: trip.postDate,
+        airport: trip.airport.airportID,
+        baggage: trip.baggage,
+        hotel: trip.hotel,
+        meal: trip.meal,
+        quote: trip.quote,
+        author: trip.author,
+        description: trip.description,
+        imageSrc: trip.imageSrc,
+        userID: trip.user.userID,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 
-  
-  insertTrip(trip: Trip){
-    return this.http
-      .post(
-        "http://localhost:5000/api/trips/new-trip",
-        {
-          city: trip.city,
-          countryID: trip.country.countryID,
-          price: trip.price,
-          travelDate: trip.travelDate,
-          returnDate: trip.returnDate,
-          postDate: trip.postDate,
-          airport: trip.airport.airportID,
-          baggage: trip.baggage,
-          hotel: trip.hotel,
-          meal: trip.meal,
-          quote: trip.quote,
-          author: trip.author,
-          description: trip.description,
-          imageSrc: trip.imageSrc,
-          userID: trip.user.userID,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-  }
-
-  updateTrip(trip: Trip){
-    return this.http
-      .post(
-        "http://localhost:5000/api/trips/update-trip",
-        {
-          tripID: trip.tripID,
-          city: trip.city,
-          countryID: trip.country.countryID,
-          price: trip.price,
-          travelDate: trip.travelDate,
-          returnDate: trip.returnDate,
-          postDate: trip.postDate,
-          airport: trip.airport.airportID,
-          baggage: trip.baggage,
-          hotel: trip.hotel,
-          meal: trip.meal,
-          quote: trip.quote,
-          author: trip.author,
-          description: trip.description,
-          imageSrc: trip.imageSrc,
-          userID: trip.user.userID,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
+  updateTrip(trip: Trip) {
+    return this.http.post(
+      `http://${environment.ip_adress}:${environment.port}/api/trips/update-trip`,
+      {
+        tripID: trip.tripID,
+        city: trip.city,
+        countryID: trip.country.countryID,
+        price: trip.price,
+        travelDate: trip.travelDate,
+        returnDate: trip.returnDate,
+        postDate: trip.postDate,
+        airport: trip.airport.airportID,
+        baggage: trip.baggage,
+        hotel: trip.hotel,
+        meal: trip.meal,
+        quote: trip.quote,
+        author: trip.author,
+        description: trip.description,
+        imageSrc: trip.imageSrc,
+        userID: trip.user.userID,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }

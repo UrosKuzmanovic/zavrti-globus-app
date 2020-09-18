@@ -6,6 +6,8 @@ import { Observable } from "rxjs";
 import { User } from "../models/user.model";
 import { Router } from '@angular/router';
 
+import * as shajs from 'sha.js';
+
 @Component({
   selector: "app-auth",
   templateUrl: "./auth.page.html",
@@ -13,7 +15,8 @@ import { Router } from '@angular/router';
 })
 export class AuthPage implements OnInit {
 
-  private isLogin: boolean = true;
+  isLogin: boolean = true;
+  error: string = "";
 
   constructor(
     private authService: AuthService,
@@ -27,12 +30,16 @@ export class AuthPage implements OnInit {
     if (!f.valid) {
       return;
     }
+
     let authObs: Observable<User[]>;
     const firstName = f.value.firstName;
     const lastName = f.value.lastName;
     const email = f.value.email;
-    const password = f.value.password;
+    const oldPass = f.value.password;
+    const password = shajs('sha256').update(oldPass).digest('hex');
     const dateOfBirth = f.value.dateOfBirth;
+
+    console.log(password);
 
     if (this.isLogin) {
       authObs = this.authService.signin(email, password);
@@ -52,8 +59,10 @@ export class AuthPage implements OnInit {
         console.log(newUser[0]);
         this.router.navigateByUrl('/home');
       },
-      (errRes) => {
+      (err) => {
         // obraditi greske pri logovanju/registrovanju
+        console.log(`Greska: ${err}`);
+        this.error = err;
       }
     );
   }

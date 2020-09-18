@@ -47,10 +47,10 @@ export class TripPage implements OnInit, OnDestroy {
         .subscribe((trip) => {
           this.trip = trip;
           console.log(trip);
-          this.tripService.getWeather(this.trip.city).subscribe((weather) => {
+          this.tripService.getWeather(this.trip.city).subscribe((weather: any) => {
             console.log(weather);
-            //this.temperature = Math.round(weather.main.temp);
-            //this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+            this.temperature = Math.round(weather.main.temp);
+            this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
           });
         });
       this.authService.userIsAuthenticated.subscribe((isLogged) => {

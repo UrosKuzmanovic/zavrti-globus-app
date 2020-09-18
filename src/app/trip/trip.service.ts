@@ -7,6 +7,7 @@ import { Country } from "../models/country.model";
 import { User } from "../models/user.model";
 import { Airport } from "../models/airport.model";
 import { FetchedTrip } from "../models/modifiedModels/fetchedTrip.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +24,9 @@ export class TripService {
 
   fetchTripByID(id: number) {
     return this.http
-      .get<FetchedTrip>(`http://localhost:5000/api/trips/trip/${id}`)
+      .get<FetchedTrip>(
+        `http://${environment.ip_adress}:${environment.port}/api/trips/trip/${id}`
+      )
       .pipe(
         map((fetchedTrip) => {
           return new Trip(
@@ -68,7 +71,7 @@ export class TripService {
 
   addToFavorites(userID: number, tripID: number) {
     return this.http.post(
-      "http://localhost:5000/api/trips/trip/favorite",
+      `http://${environment.ip_adress}:${environment.port}/api/trips/trip/favorite`,
       {
         user: userID,
         trip: tripID,
@@ -90,14 +93,14 @@ export class TripService {
       },
     };
     return this.http.delete(
-      "http://localhost:5000/api/trips/trip/favorite",
+      `http://${environment.ip_adress}:${environment.port}/api/trips/trip/favorite`,
       options
     );
   }
 
   chechFavorite(userID: number, tripID: number) {
     return this.http.post<{ userID: number; tripID: number }>(
-      "http://localhost:5000/api/trips/trip/isfavorite",
+      `http://${environment.ip_adress}:${environment.port}/api/trips/trip/isfavorite`,
       {
         user: userID,
         trip: tripID,

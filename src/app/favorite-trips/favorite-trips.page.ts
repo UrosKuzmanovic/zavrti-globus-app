@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FavoriteTripsService } from "./favorite-trips.service";
 import { Subscription } from "rxjs";
-import { TripService } from '../trip/trip.service';
-import { Trip } from '../models/trip.model';
+import { TripService } from "../trip/trip.service";
+import { Trip } from "../models/trip.model";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: "app-favorite-trips",
@@ -13,34 +14,43 @@ export class FavoriteTripsPage implements OnInit, OnDestroy {
   favorites: Trip[] = [];
   favSub: Subscription;
   showList = false;
-  userID = 1;
+  //userID = 1;
   defaultImg = "../../assets/img/trips/1.jpg";
 
-  constructor(private favoriteTripsService: FavoriteTripsService, private tripServce: TripService) {}
+  constructor(
+    private favoriteTripsService: FavoriteTripsService,
+    private tripServce: TripService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.favSub = this.favoriteTripsService.favorites.subscribe((favs) => {
-      console.log('sub');
+    /*this.favSub =*/ this.favoriteTripsService.favorites.subscribe((favs) => {
+      console.log("sub");
       this.favorites = favs;
       console.log(this.favorites);
       if (this.favorites.length > 0) this.showList = true;
       else this.showList = false;
-    }); 
+    });
   }
 
   ionViewWillEnter() {
-    console.log('enter');
-    this.favoriteTripsService.getFavorites(this.userID).subscribe();
+    console.log("enter");
+    this.authService.userID.subscribe((userID) => {
+      this.favoriteTripsService.getFavorites(userID).subscribe();
+    });
   }
 
   ngOnDestroy() {
     if (this.favSub) this.favSub.unsubscribe();
   }
 
-  removeFavorite(tripID: number){
-    this.tripServce.removeFromFavorites(this.userID, tripID).subscribe(() => {
-      this.favoriteTripsService.getFavorites(this.userID).subscribe();
-      console.log(`uklonio ${tripID}`);
+  removeFavorite(tripID: number) {
+    this.authService.userID.subscribe((userID) => {
+      this.tripServce.removeFromFavorites(userID, tripID).subscribe(() => {
+        console.log(`Trip id je ${tripID}`);
+        this.favoriteTripsService.getFavorites(userID).subscribe();
+        console.log(`uklonio ${tripID}`);
+      });
     });
   }
 

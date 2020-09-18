@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { User } from "../models/user.model";
-import { BehaviorSubject } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { BehaviorSubject, throwError } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -28,7 +29,7 @@ export class AuthService {
       map((user) => {
         if (user) {
           console.log(user);
-          
+
           return user.userID;
         } else {
           return null;
@@ -60,13 +61,13 @@ export class AuthService {
   ) {
     return this.http
       .post<User[]>(
-        "http://localhost:5000/api/users/signup",
+        `http://${environment.ip_adress}:${environment.port}/api/users/signup`,
         {
           email: email,
           password: password,
           firstName: firstName,
           lastName: lastName,
-          dateOfBirth: dateOfBirth
+          dateOfBirth: dateOfBirth,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -78,7 +79,7 @@ export class AuthService {
   signin(email: string, password: string) {
     return this.http
       .post<User[]>(
-        "http://localhost:5000/api/users/signin",
+        `http://${environment.ip_adress}:${environment.port}/api/users/signin`,
         {
           email: email,
           password: password,
@@ -87,7 +88,11 @@ export class AuthService {
           headers: { "Content-Type": "application/json" },
         }
       )
-      .pipe(tap(this.setUserData.bind(this)));
+      .pipe(tap(this.setUserData.bind(this)), catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse){
+    return throwError(error.message);
   }
 
   logout() {

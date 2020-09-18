@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { map, tap } from "rxjs/operators";
 import { Trip } from "../models/trip.model";
 import { Country } from "../models/country.model";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -27,7 +28,7 @@ export class FavoriteTripsService {
     console.log("getting favs");
     return this.http
       .post<{ [key: number]: ListedTrip }>(
-        "http://localhost:5000/api/trips/favoritetrips",
+        `http://${environment.ip_adress}:${environment.port}/api/trips/favoritetrips`,
         {
           user: userID,
         },

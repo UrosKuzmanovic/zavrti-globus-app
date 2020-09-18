@@ -22,10 +22,16 @@ export class TripsPage implements OnInit, OnDestroy {
   constructor(private tripsService: TripsService) {}
 
   ngOnInit() {
-    this.tripsSub = this.tripsService.trips.subscribe((trips) => {
-      this.trips = trips;
-      this.tripsCopy = trips;
-    });
+    this.tripsSub = this.tripsService.trips.subscribe(
+      (trips) => {
+        this.trips = trips;
+        this.tripsCopy = trips;
+      },
+      (error) => {
+        console.log("Doslo je do greske");
+        console.log(error);
+      }
+    );
   }
 
   ngOnDestroy() {
