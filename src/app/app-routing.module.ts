@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./auth/auth.guard";
-import { AdminGuard } from './auth/admin.guard';
+import { AdminGuard } from "./auth/admin.guard";
 
 const routes: Routes = [
-  { path: "", redirectTo: "auth", pathMatch: "full" },
+  { path: "", redirectTo: "home", pathMatch: "full" },
   {
     path: "auth",
     loadChildren: () =>
@@ -13,7 +13,8 @@ const routes: Routes = [
   {
     path: "home",
     loadChildren: () =>
-      import("./home/home.module").then((m) => m.HomePageModule)
+      import("./home/home.module").then((m) => m.HomePageModule),
+    canLoad: [AuthGuard],
   },
   {
     path: "profile",
@@ -24,7 +25,8 @@ const routes: Routes = [
   {
     path: "trips",
     loadChildren: () =>
-      import("./trips/trips.module").then((m) => m.TripsPageModule)
+      import("./trips/trips.module").then((m) => m.TripsPageModule),
+    canLoad: [AuthGuard],
   },
   {
     path: "inquiries",
@@ -35,19 +37,22 @@ const routes: Routes = [
   {
     path: "settings",
     loadChildren: () =>
-      import("./settings/settings.module").then((m) => m.SettingsPageModule)
+      import("./settings/settings.module").then((m) => m.SettingsPageModule),
+    canLoad: [AuthGuard],
   },
   {
     path: "terms-of-use",
     loadChildren: () =>
       import("./terms-of-use/terms-of-use.module").then(
         (m) => m.TermsOfUsePageModule
-      )
+      ),
+    canLoad: [AuthGuard],
   },
   {
     path: "about",
     loadChildren: () =>
-      import("./about/about.module").then((m) => m.AboutPageModule)
+      import("./about/about.module").then((m) => m.AboutPageModule),
+    canLoad: [AuthGuard],
   },
   {
     path: "inquiry-trips",

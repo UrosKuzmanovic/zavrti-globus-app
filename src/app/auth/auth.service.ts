@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { User } from "../models/user.model";
-import { BehaviorSubject, throwError } from "rxjs";
+import { BehaviorSubject, from, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
+import { Plugins } from "@capacitor/core";
 
 @Injectable({
   providedIn: "root",
@@ -52,6 +53,42 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  autoLogin() {
+    return from(Plugins.Storage.get({ key: "authData" })).pipe(
+      map((storedData) => {
+        if (!storedData || !storedData.value) {
+          return null;
+        }
+        const parsedData = JSON.parse(storedData.value) as {
+          userID: number;
+          email: string;
+          firstName: string;
+          lastName: string;
+          dateOfBirth: Date;
+          role: string;
+        };
+        const user = new User(
+          parsedData.userID,
+          parsedData.email,
+          null,
+          parsedData.firstName,
+          parsedData.lastName,
+          parsedData.dateOfBirth,
+          parsedData.role
+        );
+        return user;
+      }),
+      tap((user) => {
+        if (user) {
+          this._user.next(user);
+        }
+      }),
+      map((user) => {
+        return !!user;
+      })
+    );
+  }
+
   signup(
     email: string,
     password: string,
@@ -91,12 +128,13 @@ export class AuthService {
       .pipe(tap(this.setUserData.bind(this)), catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse){
+  private handleError(error: HttpErrorResponse) {
     return throwError(error.message);
   }
 
   logout() {
     this._user.next(null);
+    Plugins.Storage.remove({ key: "authData" });
   }
 
   private setUserData(userData: User[]) {
@@ -111,5 +149,32 @@ export class AuthService {
         userData[0].role
       )
     );
+    this.storeAuthData(
+      userData[0].userid,
+      userData[0].email,
+      userData[0].firstname,
+      userData[0].lastname,
+      userData[0].dateofbirth,
+      userData[0].role
+    );
+  }
+
+  private storeAuthData(
+    userID: number,
+    email: string,
+    firstName: string,
+    lastName: string,
+    dateOfBirth: Date,
+    role: string
+  ) {
+    const data = JSON.stringify({
+      userID: userID,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      role: role,
+    });
+    Plugins.Storage.set({ key: "authData", value: data });
   }
 }

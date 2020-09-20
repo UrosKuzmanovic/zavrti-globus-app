@@ -104,20 +104,20 @@ export class TripPage implements OnInit, OnDestroy {
     } else {
       return `${dayFrom}. ${this.monthFormat(
         monthFrom
-      )} ${yearFrom} - ${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
+      )} ${yearFrom} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearTo}.`;
     }
   }
 
   monthFormat(month: number) {
     switch (month) {
       case 1:
-        return "januar";
+        return "jan";
       case 2:
-        return "februar";
+        return "feb";
       case 3:
-        return "mart";
+        return "mar";
       case 4:
-        return "april";
+        return "apr";
       case 5:
         return "maj";
       case 6:
@@ -125,15 +125,15 @@ export class TripPage implements OnInit, OnDestroy {
       case 7:
         return "jul";
       case 8:
-        return "avgust";
+        return "avg";
       case 9:
-        return "septembar";
+        return "sep";
       case 10:
-        return "oktobar";
+        return "okt";
       case 11:
-        return "novembar";
+        return "nov";
       case 12:
-        return "decembar";
+        return "dec";
       default:
         return "null";
     }
