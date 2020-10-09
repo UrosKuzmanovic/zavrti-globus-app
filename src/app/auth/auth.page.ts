@@ -4,9 +4,10 @@ import { AlertController } from "@ionic/angular";
 import { AuthService } from "./auth.service";
 import { Observable } from "rxjs";
 import { User } from "../models/user.model";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 
-import * as shajs from 'sha.js';
+import * as shajs from "sha.js";
+import { CodePush, InstallMode, SyncStatus } from "@ionic-native/code-push/ngx";
 
 @Component({
   selector: "app-auth",
@@ -14,17 +15,21 @@ import * as shajs from 'sha.js';
   styleUrls: ["./auth.page.scss"],
 })
 export class AuthPage implements OnInit {
-
   isLogin: boolean = true;
   error: string = "";
+  update: String = "waiting...";
+  progress = "";
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private codePush: CodePush
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.checkCodePush();
+  }
 
   onSubmit(f: NgForm) {
     if (!f.valid) {
@@ -36,7 +41,7 @@ export class AuthPage implements OnInit {
     const lastName = f.value.lastName;
     const email = f.value.email;
     const oldPass = f.value.password;
-    const password = shajs('sha256').update(oldPass).digest('hex');
+    const password = shajs("sha256").update(oldPass).digest("hex");
     const dateOfBirth = f.value.dateOfBirth;
 
     console.log(password);
@@ -57,7 +62,7 @@ export class AuthPage implements OnInit {
       (newUser) => {
         // uspesno ulogovan/registrovan
         console.log(newUser[0]);
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl("/home");
       },
       (err) => {
         // obraditi greske pri logovanju/registrovanju
@@ -67,8 +72,8 @@ export class AuthPage implements OnInit {
     );
   }
 
-  loginGuest(){
-    this.router.navigateByUrl('/home');
+  loginGuest() {
+    this.router.navigateByUrl("/home");
   }
 
   async showPasswordHelp() {
@@ -79,5 +84,36 @@ export class AuthPage implements OnInit {
       buttons: ["U redu"],
     });
     await alert.present();
+  }
+
+  checkCodePush() {
+    console.log("Provera verzije");
+
+    this.codePush
+      .sync(
+        {
+          updateDialog: {
+            appendReleaseDescription: true,
+            updateTitle: "Dostupno je ažuriranje:",
+            mandatoryUpdateMessage: "",
+            mandatoryContinueButtonLabel: "Nastavi",
+            descriptionPrefix: "\nPromene:\n\n",
+          },
+          installMode: InstallMode.IMMEDIATE,
+        },
+        (downloadProgress) => {
+          this.progress = `Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`;
+        }
+      )
+      .subscribe(
+        (status: SyncStatus) => {
+          this.update = `CODE PUSH SUCCESSFUL: ${status}`;
+          console.log("CODE PUSH SUCCESSFUL: " + status);
+        },
+        (err) => {
+          this.update = `greska - CODE PUSH UNSUCCESSFUL: ${err}`;
+          console.log("CODE PUSH SUCCESSFUL: " + err);
+        }
+      );
   }
 }

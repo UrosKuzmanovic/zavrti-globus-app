@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { splitAtColon } from "@angular/compiler/src/util";
 import { Subscription } from "rxjs";
-import { Platform } from "@ionic/angular";
 import { CodePush, InstallMode, SyncStatus } from "@ionic-native/code-push/ngx";
 
 @Component({
@@ -10,21 +8,15 @@ import { CodePush, InstallMode, SyncStatus } from "@ionic-native/code-push/ngx";
   styleUrls: ["home.page.scss"],
 })
 export class HomePage implements OnInit {
-  //private platform: Platform;
   private exitSub: Subscription;
   update: String = "waiting...";
+  progress = "";
 
   constructor(private codePush: CodePush) {}
 
   ngOnInit() {
-    /*this.platform.ready().then(() => {
-      this.checkCodePush();
-    });*/
-
     this.checkCodePush();
   }
-
-  progress = "";
 
   slideOptionsHeadline = {
     initialSlide: 0,
