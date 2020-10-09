@@ -10,6 +10,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
+import { CodePush } from "@ionic-native/code-push/ngx"
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { FormsModule } from "@angular/forms";
   providers: [
     StatusBar,
     SplashScreen,
+    CodePush,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

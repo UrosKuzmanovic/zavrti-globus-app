@@ -1,7 +1,8 @@
 {
   "name": "Zavrti globus",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
