@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { NavController } from "@ionic/angular";
+import { AlertController, NavController } from "@ionic/angular";
 import { Trip } from "../models/trip.model";
 import { TripService } from "./trip.service";
 import { Subscription } from "rxjs";
@@ -27,12 +27,15 @@ export class TripPage implements OnInit, OnDestroy {
   tripSub: Subscription;
   favSub: Subscription;
 
+  private webWiew: any = window;
+
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private tripService: TripService,
     private favoriteTripsService: FavoriteTripsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -47,25 +50,37 @@ export class TripPage implements OnInit, OnDestroy {
         .subscribe((trip) => {
           this.trip = trip;
           console.log(trip);
-          this.tripService.getWeather(this.trip.city).subscribe((weather: any) => {
-            console.log(weather);
-            this.temperature = Math.round(weather.main.temp);
-            this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
-          });
+          this.tripService
+            .getWeather(this.trip.city)
+            .subscribe((weather: any) => {
+              console.log(weather);
+              this.temperature = Math.round(weather.main.temp);
+              this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+            });
+          this.webWiew.AppCenter.Analytics.trackEvent(
+            "Trip watched",
+            { City: trip.city ? trip.city : "", Country: trip.country.name },
+            () => {
+              console.log("Event tracked");
+            },
+            (error) => {
+              console.error(`error tracked: ${error}`);
+            }
+          );
         });
       this.authService.userIsAuthenticated.subscribe((isLogged) => {
         this.isLogged = isLogged;
       });
-      this.authService.userID.subscribe(userID => {
+      this.authService.userID.subscribe((userID) => {
         this.favSub = this.tripService
-        .chechFavorite(userID, this.tripID)
-        .subscribe((data) => {
-          if (data != null) this.favorite = true;
-          else this.favorite = false;
-        });
-        this.authService.userIsAdmin.subscribe(isAdmin => {
+          .chechFavorite(userID, this.tripID)
+          .subscribe((data) => {
+            if (data != null) this.favorite = true;
+            else this.favorite = false;
+          });
+        this.authService.userIsAdmin.subscribe((isAdmin) => {
           this.isAdmin = isAdmin;
-        })
+        });
       });
     });
   }
@@ -144,19 +159,32 @@ export class TripPage implements OnInit, OnDestroy {
       this.tripService.addToFavorites(userID, this.tripID).subscribe(() => {
         this.favorite = true;
         this.favoriteTripsService.getFavorites(userID).subscribe();
+        this.webWiew.AppCenter.Analytics.trackEvent(
+          "Trip saved",
+          {
+            City: this.trip.city ? this.trip.city : "",
+            Country: this.trip.country.name,
+          },
+          () => {
+            console.log("Event tracked");
+          },
+          (error) => {
+            console.error(`error tracked: ${error}`);
+          }
+        );
       });
     });
   }
 
   removeFromFavorites() {
-    this.authService.userID.subscribe(userID => {
+    this.authService.userID.subscribe((userID) => {
       this.tripService
-      .removeFromFavorites(userID, this.tripID)
-      .subscribe(() => {
-        this.favorite = false;
-        this.favoriteTripsService.getFavorites(userID).subscribe();
-      });
-    })
+        .removeFromFavorites(userID, this.tripID)
+        .subscribe(() => {
+          this.favorite = false;
+          this.favoriteTripsService.getFavorites(userID).subscribe();
+        });
+    });
   }
 
   editTrip() {

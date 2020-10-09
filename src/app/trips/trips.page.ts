@@ -19,6 +19,8 @@ export class TripsPage implements OnInit, OnDestroy {
   selectedCountry = "all";
   defaultImg = "../../assets/img/trips/1.jpg";
 
+  private webWiew: any = window;
+
   constructor(private tripsService: TripsService) {}
 
   ngOnInit() {
@@ -30,6 +32,16 @@ export class TripsPage implements OnInit, OnDestroy {
       (error) => {
         console.log("Doslo je do greske");
         console.log(error);
+      }
+    );
+    this.webWiew.AppCenter.Analytics.trackEvent(
+      "All trips opened",
+      {},
+      () => {
+        console.log("Event tracked");
+      },
+      (error) => {
+        console.error(`error tracked: ${error}`);
       }
     );
   }

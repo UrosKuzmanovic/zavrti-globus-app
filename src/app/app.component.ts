@@ -21,6 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
   adminSub: Subscription;
   authSub: Subscription;
 
+  private webWiew: any = window;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -46,6 +48,11 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log(`Admin je ${admin}`);
       this.admin = admin;
     });
+    this.webWiew.AppCenter.Analytics.setEnabled(
+      true,
+      () => {},
+      () => {}
+    );
   }
 
   ngOnInit() {
@@ -72,5 +79,18 @@ export class AppComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     //this.router.navigateByUrl("/auth");
+  }
+
+  socialNetworkClick(app: string) {
+    this.webWiew.AppCenter.Analytics.trackEvent(
+      "Social network opened",
+      { app: app },
+      () => {
+        console.log("Event tracked");
+      },
+      (error) => {
+        console.error(`error tracked: ${error}`);
+      }
+    );
   }
 }

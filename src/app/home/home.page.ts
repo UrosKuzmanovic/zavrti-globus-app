@@ -12,10 +12,22 @@ export class HomePage implements OnInit {
   update: String = "waiting...";
   progress = "";
 
+  private webWiew: any = window;
+
   constructor(private codePush: CodePush) {}
 
   ngOnInit() {
     this.checkCodePush();
+    this.webWiew.AppCenter.Analytics.trackEvent(
+      "App opened",
+      {},
+      () => {
+        console.log("Event tracked");
+      },
+      (error) => {
+        console.error(`error tracked: ${error}`);
+      }
+    );
   }
 
   slideOptionsHeadline = {
@@ -55,7 +67,6 @@ export class HomePage implements OnInit {
 
   checkCodePush() {
     console.log("Provera verzije");
-
     this.codePush
       .sync(
         {

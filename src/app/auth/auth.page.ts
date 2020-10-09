@@ -20,6 +20,8 @@ export class AuthPage implements OnInit {
   update: String = "waiting...";
   progress = "";
 
+  private webWiew: any = window;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -62,11 +64,32 @@ export class AuthPage implements OnInit {
       (newUser) => {
         // uspesno ulogovan/registrovan
         console.log(newUser[0]);
+        this.webWiew.AppCenter.Analytics.trackEvent(
+          "User logged in",
+          { Role: newUser[0].role },
+          () => {
+            console.log("Event tracked");
+          },
+          (error) => {
+            console.error(`error tracked: ${error}`);
+          }
+        );
         this.router.navigateByUrl("/home");
       },
       (err) => {
         // obraditi greske pri logovanju/registrovanju
         console.log(`Greska: ${err}`);
+        this.webWiew.AppCenter.Analytics.trackEvent(
+          "Login failed",
+          {},
+          () => {
+            console.log("Event tracked");
+          },
+          (error) => {
+            console.error(`error tracked: ${error}`);
+          }
+        );
+        this.router.navigateByUrl("/home");
         this.error = err;
       }
     );
