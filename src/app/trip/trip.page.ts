@@ -27,7 +27,7 @@ export class TripPage implements OnInit, OnDestroy {
   tripSub: Subscription;
   favSub: Subscription;
 
-  private webWiew: any = window;
+  private _window: any = window;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,12 +57,12 @@ export class TripPage implements OnInit, OnDestroy {
               this.temperature = Math.round(weather.main.temp);
               this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
             });
-          this.webWiew.AppCenter.Analytics.trackEvent(
+          /*AppCenter.Analytics.trackEvent(
             "Trip",
             { City: trip.city ? trip.city : "", Country: trip.country.name },
             (a) => {
               console.log("Event tracked");
-              /*this.alertCtrl
+              this.alertCtrl
                 .create({
                   header: "Tracking event!",
                   message: `This event has been tracked. ${a}`,
@@ -74,7 +74,7 @@ export class TripPage implements OnInit, OnDestroy {
                 })
                 .then((alertEl) => {
                   return alertEl.present();
-                });*/
+                });
             },
             (error) => {
               console.error(`error tracked: ${error}`);
@@ -92,7 +92,7 @@ export class TripPage implements OnInit, OnDestroy {
                   return alertEl.present();
                 });
             }
-          );
+          );*/
         });
       this.authService.userIsAuthenticated.subscribe((isLogged) => {
         this.isLogged = isLogged;
@@ -185,7 +185,7 @@ export class TripPage implements OnInit, OnDestroy {
       this.tripService.addToFavorites(userID, this.tripID).subscribe(() => {
         this.favorite = true;
         this.favoriteTripsService.getFavorites(userID).subscribe();
-        this.webWiew.AppCenter.Analytics.trackEvent(
+        /*this._window.AppCenter.Analytics.trackEvent(
           "Saved trip",
           {
             City: this.trip.city ? this.trip.city : "",
@@ -197,7 +197,7 @@ export class TripPage implements OnInit, OnDestroy {
           (error) => {
             console.error(`error tracked: ${error}`);
           }
-        );
+        );*/
       });
     });
   }

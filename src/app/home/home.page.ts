@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.checkCodePush();
-    this.webWiew.AppCenter.Analytics.setEnabled(
+    /*this.webWiew.AppCenter.Analytics.setEnabled(
       true,
       () => {},
       () => {}
@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
       (error) => {
         console.error(`error tracked: ${error}`);
       }
-    );
+    );*/
   }
 
   slideOptionsHeadline = {

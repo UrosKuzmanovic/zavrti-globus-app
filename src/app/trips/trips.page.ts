@@ -34,7 +34,7 @@ export class TripsPage implements OnInit, OnDestroy {
         console.log(error);
       }
     );
-    this.webWiew.AppCenter.Analytics.trackEvent(
+    /*this.webWiew.AppCenter.Analytics.trackEvent(
       "All trips",
       {},
       () => {
@@ -43,7 +43,7 @@ export class TripsPage implements OnInit, OnDestroy {
       (error) => {
         console.error(`error tracked: ${error}`);
       }
-    );
+    );*/
   }
 
   ngOnDestroy() {

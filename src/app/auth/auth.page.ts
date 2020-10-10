@@ -69,7 +69,7 @@ export class AuthPage implements OnInit {
       (newUser) => {
         // uspesno ulogovan/registrovan
         console.log(newUser[0]);
-        this.webWiew.AppCenter.Analytics.trackEvent(
+        /*this.webWiew.AppCenter.Analytics.trackEvent(
           "Login",
           { Role: newUser[0].role },
           () => {
@@ -78,13 +78,13 @@ export class AuthPage implements OnInit {
           (error) => {
             console.error(`error tracked: ${error}`);
           }
-        );
+        );*/
         this.router.navigateByUrl("/home");
       },
       (err) => {
         // obraditi greske pri logovanju/registrovanju
         console.log(`Greska: ${err}`);
-        this.webWiew.AppCenter.Analytics.trackEvent(
+        /*this.webWiew.AppCenter.Analytics.trackEvent(
           "Login failed",
           {},
           () => {
@@ -93,7 +93,7 @@ export class AuthPage implements OnInit {
           (error) => {
             console.error(`error tracked: ${error}`);
           }
-        );
+        );*/
         this.router.navigateByUrl("/home");
         this.error = err;
       }
