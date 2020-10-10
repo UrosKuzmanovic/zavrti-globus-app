@@ -31,6 +31,11 @@ export class AuthPage implements OnInit {
 
   ngOnInit() {
     this.checkCodePush();
+    this.webWiew.AppCenter.Analytics.setEnabled(
+      true,
+      () => {},
+      () => {}
+    );
   }
 
   onSubmit(f: NgForm) {
@@ -65,7 +70,7 @@ export class AuthPage implements OnInit {
         // uspesno ulogovan/registrovan
         console.log(newUser[0]);
         this.webWiew.AppCenter.Analytics.trackEvent(
-          "User logged in",
+          "Login",
           { Role: newUser[0].role },
           () => {
             console.log("Event tracked");

@@ -35,7 +35,7 @@ export class TripsPage implements OnInit, OnDestroy {
       }
     );
     this.webWiew.AppCenter.Analytics.trackEvent(
-      "All trips opened",
+      "All trips",
       {},
       () => {
         console.log("Event tracked");

@@ -58,13 +58,39 @@ export class TripPage implements OnInit, OnDestroy {
               this.weatherIcon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
             });
           this.webWiew.AppCenter.Analytics.trackEvent(
-            "Trip watched",
+            "Trip",
             { City: trip.city ? trip.city : "", Country: trip.country.name },
-            () => {
+            (a) => {
               console.log("Event tracked");
+              /*this.alertCtrl
+                .create({
+                  header: "Tracking event!",
+                  message: `This event has been tracked. ${a}`,
+                  buttons: [
+                    {
+                      text: "OK",
+                    },
+                  ],
+                })
+                .then((alertEl) => {
+                  return alertEl.present();
+                });*/
             },
             (error) => {
               console.error(`error tracked: ${error}`);
+              this.alertCtrl
+                .create({
+                  header: "Tracking event!",
+                  message: `This event has been tracked. ${error}`,
+                  buttons: [
+                    {
+                      text: "OK",
+                    },
+                  ],
+                })
+                .then((alertEl) => {
+                  return alertEl.present();
+                });
             }
           );
         });
@@ -160,7 +186,7 @@ export class TripPage implements OnInit, OnDestroy {
         this.favorite = true;
         this.favoriteTripsService.getFavorites(userID).subscribe();
         this.webWiew.AppCenter.Analytics.trackEvent(
-          "Trip saved",
+          "Saved trip",
           {
             City: this.trip.city ? this.trip.city : "",
             Country: this.trip.country.name,

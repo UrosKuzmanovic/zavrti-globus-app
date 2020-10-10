@@ -18,8 +18,13 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.checkCodePush();
+    this.webWiew.AppCenter.Analytics.setEnabled(
+      true,
+      () => {},
+      () => {}
+    );
     this.webWiew.AppCenter.Analytics.trackEvent(
-      "App opened",
+      "App start",
       {},
       () => {
         console.log("Event tracked");

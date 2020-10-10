@@ -48,11 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log(`Admin je ${admin}`);
       this.admin = admin;
     });
-    this.webWiew.AppCenter.Analytics.setEnabled(
-      true,
-      () => {},
-      () => {}
-    );
+    
   }
 
   ngOnInit() {
@@ -82,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   socialNetworkClick(app: string) {
-    this.webWiew.AppCenter.Analytics.trackEvent(
+    /*this.webWiew.AppCenter.Analytics.trackEvent(
       "Social network opened",
       { app: app },
       () => {
@@ -91,6 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
       (error) => {
         console.error(`error tracked: ${error}`);
       }
-    );
+    );*/
   }
 }
