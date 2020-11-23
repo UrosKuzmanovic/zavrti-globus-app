@@ -33,8 +33,7 @@ export class NewInquiryService {
         {
           headers: { "Content-Type": "application/json" },
         }
-      )
-      .subscribe();
+      );
   }
 
   fetchCountries() {

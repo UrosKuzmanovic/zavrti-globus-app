@@ -6,74 +6,80 @@
 </ion-header>
 
 <ion-content>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <ion-grid class="ion-padding">
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Grad <ion-text color="medium">(opciono)</ion-text>
-            </ion-label>
-            <ion-input type="text" name="city" ngModel></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Država</ion-label>
-            <ion-select name="country" ngModel required interface="action-sheet">
-              <ion-select-option *ngFor="let country of countries" [value]="country.countryID">{{ country.name }}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="6">
-          <ion-item>
-            <ion-label position="floating">Datum putovanja</ion-label>
-            <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMM YYYY" name="travelDate" ngModel required
-              [min]="minDate" [max]="maxDate" #travelDateCtrl="ngModel">
-            </ion-datetime>
-          </ion-item>
-        </ion-col>
-        <ion-col size="6">
-          <ion-item>
-            <ion-label position="floating">Datum povratka</ion-label>
-            <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMM YYYY" name="returnDate" ngModel required
-              [min]="travelDateCtrl.value" [max]="maxDate">
-            </ion-datetime>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Maksimalna cena <ion-text color="medium">(u evrima)</ion-text>
-            </ion-label>
-            <ion-input type="number" name="price" ngModel required #priceCtrl="ngModel" pattern="[0-9]+"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Dodatni opis o putovanju <ion-text color="medium">(opciono)</ion-text>
-            </ion-label>
-            <ion-textarea rows="3" name="description" ngModel></ion-textarea>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col></ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-button type="submit" expand="block" shape="round" [disabled]="!f.valid">
-            Pošalji upit
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+  <div class="ion-padding ion-text-center" *ngIf="isAdmin">
+    <ion-title>Ne možete slati upite kao admin.</ion-title>
+  </div>
+
+  <div *ngIf="!isAdmin">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <ion-grid class="ion-padding">
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Grad <ion-text color="medium">(opciono)</ion-text>
+              </ion-label>
+              <ion-input type="text" name="city" ngModel></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Država</ion-label>
+              <ion-select name="country" ngModel required interface="action-sheet">
+                <ion-select-option *ngFor="let country of countries" [value]="country.countryID">{{ country.name }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">Datum putovanja</ion-label>
+              <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMM YYYY" name="travelDate" ngModel required
+                [min]="minDate" [max]="maxDate" #travelDateCtrl="ngModel">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">Datum povratka</ion-label>
+              <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMM YYYY" name="returnDate" ngModel required
+                [min]="travelDateCtrl.value" [max]="maxDate">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Maksimalna cena <ion-text color="medium">(u evrima)</ion-text>
+              </ion-label>
+              <ion-input type="number" name="price" ngModel required #priceCtrl="ngModel" pattern="[0-9]+"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Dodatni opis o putovanju <ion-text color="medium">(opciono)</ion-text>
+              </ion-label>
+              <ion-textarea rows="3" name="description" ngModel></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button type="submit" expand="block" shape="round" [disabled]="!f.valid">
+              Pošalji upit
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
 </ion-content>

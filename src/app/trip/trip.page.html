@@ -8,9 +8,9 @@
             (click)="editTrip()">
         </ion-icon>
         <ion-icon name="bookmark-outline" slot="end" style="font-size: 4vh;" class="ion-padding"
-            *ngIf="isLogged && !favorite" (click)="addToFavorites()"></ion-icon>
-        <ion-icon name="bookmark" slot="end" style="font-size: 4vh;" class="ion-padding" *ngIf="isLogged && favorite"
-            (click)="removeFromFavorites()"></ion-icon>
+            *ngIf="isLogged && !favorite && !isInquiry" (click)="addToFavorites()"></ion-icon>
+        <ion-icon name="bookmark" slot="end" style="font-size: 4vh;" class="ion-padding"
+            *ngIf="isLogged && favorite && !isInquiry" (click)="removeFromFavorites()"></ion-icon>
     </ion-toolbar>
 </ion-header>
 
@@ -19,15 +19,25 @@
         <ion-spinner color="primary" class="spinner-position"></ion-spinner>
     </div>
     <div *ngIf="trip">
-        <ion-img [src]='trip.imageSrc ? trip.imageSrc : defaultImgSrc' alt="grad"></ion-img>
+        <ion-img [src]='trip.imageSrc ? trip.imageSrc : defaultImgSrc' alt="grad" *ngIf="trip.imageSrc"></ion-img>
         <ion-grid>
             <ion-row>
                 <ion-col size="8">
-                    <ion-title class="ion-padding headline-text"><strong>{{ trip.city ? trip.city : trip.country.name }}</strong></ion-title>
+                    <ion-title class="ion-padding headline-text">
+                        <strong>{{ trip.city ? trip.city : trip.country.name }}</strong></ion-title>
                 </ion-col>
                 <ion-col size="4">
                     <ion-title class="ion-padding text-price headline-text"><strong>{{ trip.price }} &euro;</strong>
                     </ion-title>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12" class="ion-no-padding">
+                    <ion-item>
+                        <img [src]="flagSrc" [alt]="trip.country.flagSrc">
+                        <ion-label class="ion-margin-start" style="font-weight: bold;">{{ trip.country.name }}
+                        </ion-label>
+                    </ion-item>
                 </ion-col>
             </ion-row>
             <ion-row>
@@ -38,7 +48,15 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="isInquiry">
+                <ion-col size="12" class="ion-no-padding">
+                    <ion-item>
+                        <ion-icon name="chatbubble-ellipses-outline" class="ion-padding-end"></ion-icon>
+                        <ion-label class="ion-no-margin">{{ oneDateFormat(trip.postDate) }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="trip.airport.airportName">
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="airplane-outline" class="ion-padding-end"></ion-icon>
@@ -46,7 +64,7 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="trip.baggage">
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="briefcase-outline" class="ion-padding-end"></ion-icon>
@@ -54,7 +72,7 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="trip.hotel">
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="bed-outline" class="ion-padding-end"></ion-icon>
@@ -62,7 +80,7 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="trip.hotel">
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="fast-food-outline" class="ion-padding-end"></ion-icon>
@@ -71,14 +89,14 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="trip.quote">
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-text class="ion-padding-vertical"><i>"{{ trip.quote }}"</i> - {{ trip.author }}</ion-text>
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="temperature && !isInquiry">
                 <ion-col size="12">
                     <ion-item>
                         <ion-img [src]="weatherIcon" style="height: 8vh;" class="ion-no-padding"></ion-img>
@@ -86,14 +104,28 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="isInquiry">
                 <ion-col size="12" class="ion-padding">
                     <ion-text style="white-space: pre-line">
-                        {{ trip.description ? trip.description : desc }}
+                        {{ submitetBy }}
                     </ion-text>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="trip.description">
+                <ion-col size="12" class="ion-padding">
+                    <ion-text style="white-space: pre-line">
+                        {{ trip.description }}
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!isInquiry">
+                <ion-col size="12" class="ion-padding">
+                    <ion-text style="white-space: pre-line">
+                        {{ desc }}
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!isInquiry">
                 <ion-col size="6">
                     <ion-button shape="round" color="primary" style="width: 100%;">
                         Rezerviši

@@ -36,12 +36,12 @@ export class TripService {
               fetchedTrip.countryID,
               fetchedTrip.countryName,
               null, // treba staviti kontinent
-              null // treba staviti zastavu
+              fetchedTrip.countryFlagSrc
             ),
             fetchedTrip.price,
             new Date(fetchedTrip.travelDate),
             new Date(fetchedTrip.returnDate),
-            null, // treba staviti postDate
+            new Date(fetchedTrip.postDate),
             new Airport(fetchedTrip.airportID, fetchedTrip.airportName),
             fetchedTrip.baggage,
             fetchedTrip.hotel,

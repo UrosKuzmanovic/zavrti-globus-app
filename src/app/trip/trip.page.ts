@@ -20,9 +20,12 @@ export class TripPage implements OnInit, OnDestroy {
     "Aranžman ne uključuje:\n•Transfer aerodrom-hotel-aerodrom.\n---------------------------------------------\nCena aranžmana formirana je na dan objavljivanja ponude.\n\nZa sve nedoumice, pitanja i prijave javite nam se privatnom porukom ili na mail zavrtiglobus@gmail.com";
   tripID: number;
   trip: Trip;
-  defaultImgSrc = "../../assets/img/trips/1.jpg";
+  defaultImgSrc = "../../assets/img/logo/zg.jpg";
   temperature: number;
   weatherIcon: string;
+  isInquiry = false;
+  flagSrc = "";
+  submitetBy = "";
 
   tripSub: Subscription;
   favSub: Subscription;
@@ -49,6 +52,10 @@ export class TripPage implements OnInit, OnDestroy {
         .fetchTripByID(this.tripID)
         .subscribe((trip) => {
           this.trip = trip;
+          if (this.trip.user.role === "user") this.isInquiry = true;
+          else this.isInquiry = false;
+          this.flagSrc = `https://www.countryflags.io/${trip.country.flagSrc}/flat/24.png`;
+          this.submitetBy = `Ovaj upit je poslao/la korisnik ${trip.user.firstName} ${trip.user.lastName}`;
           console.log(trip);
           this.tripService
             .getWeather(this.trip.city)
@@ -147,6 +154,14 @@ export class TripPage implements OnInit, OnDestroy {
         monthFrom
       )} ${yearFrom} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearTo}.`;
     }
+  }
+
+  oneDateFormat(postFrom: Date) {
+    var dayFrom = postFrom.getUTCDate();
+    var monthFrom = postFrom.getUTCMonth() + 1;
+    var yearFrom = postFrom.getUTCFullYear();
+
+    return `${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
   }
 
   monthFormat(month: number) {

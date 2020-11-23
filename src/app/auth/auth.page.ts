@@ -31,11 +31,11 @@ export class AuthPage implements OnInit {
 
   ngOnInit() {
     this.checkCodePush();
-    this.webWiew.AppCenter.Analytics.setEnabled(
+    /*this.webWiew.AppCenter.Analytics.setEnabled(
       true,
       () => {},
       () => {}
-    );
+    );*/
   }
 
   onSubmit(f: NgForm) {
@@ -50,8 +50,6 @@ export class AuthPage implements OnInit {
     const oldPass = f.value.password;
     const password = shajs("sha256").update(oldPass).digest("hex");
     const dateOfBirth = f.value.dateOfBirth;
-
-    console.log(password);
 
     if (this.isLogin) {
       authObs = this.authService.signin(email, password);

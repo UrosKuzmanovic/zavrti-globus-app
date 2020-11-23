@@ -29,8 +29,6 @@ export class AuthService {
     return this._user.asObservable().pipe(
       map((user) => {
         if (user) {
-          console.log(user);
-
           return user.userID;
         } else {
           return null;

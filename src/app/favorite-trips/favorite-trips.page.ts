@@ -14,8 +14,7 @@ export class FavoriteTripsPage implements OnInit, OnDestroy {
   favorites: Trip[] = [];
   favSub: Subscription;
   showList = false;
-  //userID = 1;
-  defaultImg = "../../assets/img/trips/1.jpg";
+  defaultImg = "../../assets/img/logo/zg.jpg";
 
   constructor(
     private favoriteTripsService: FavoriteTripsService,
@@ -25,9 +24,7 @@ export class FavoriteTripsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     /*this.favSub =*/ this.favoriteTripsService.favorites.subscribe((favs) => {
-      console.log("sub");
       this.favorites = favs;
-      console.log(this.favorites);
       if (this.favorites.length > 0) this.showList = true;
       else this.showList = false;
     });

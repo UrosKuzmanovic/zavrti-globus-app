@@ -16,6 +16,7 @@ import { take } from "rxjs/operators";
 export class NewInquiryPage implements OnInit {
   minDate: string = new Date().toISOString();
   maxDate: any = new Date().getFullYear() + 3;
+  isAdmin: boolean = false;
 
   countries: Country[];
 
@@ -27,6 +28,9 @@ export class NewInquiryPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.authService.userIsAdmin.subscribe(isAdmin => {
+      this.isAdmin = isAdmin;
+    })
     this.newInquiryService.fetchCountries().subscribe((countries) => {
       this.countries = countries;
     });
@@ -38,28 +42,34 @@ export class NewInquiryPage implements OnInit {
       if (!userID) {
         return;
       } else {
-        this.newInquiryService.onSubmit(
-          new Trip(
-            null,
-            f.value.city.trim(),
-            new Country(f.value.country, null, null, null),
-            f.value.price,
-            f.value.travelDate,
-            f.value.returnDate,
-            new Date(),
-            new Airport(null, null),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            f.value.description.trim(),
-            null,
-            new User(userID, null, null, null, null, null, null) // treba korisnik
+        this.newInquiryService
+          .onSubmit(
+            new Trip(
+              null,
+              f.value.city.trim(),
+              new Country(f.value.country, null, null, null),
+              f.value.price,
+              f.value.travelDate,
+              f.value.returnDate,
+              new Date(),
+              new Airport(null, null),
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              f.value.description.trim(),
+              null,
+              new User(userID, null, null, null, null, null, null)
+            )
           )
-        );
+          .subscribe(() => {
+            console.log("Uspesno poslao");
+            // alert da je poslato
+            // redirect na pocetnu
+          });
       }
     });
   }

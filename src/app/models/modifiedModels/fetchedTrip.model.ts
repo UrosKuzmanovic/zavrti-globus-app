@@ -4,6 +4,7 @@ export class FetchedTrip{
         public city: string,
         public countryID: number,
         public countryName: string,
+        public countryFlagSrc: string,
         public price: number,
         public travelDate: Date,
         public returnDate: Date,
