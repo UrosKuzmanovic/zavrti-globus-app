@@ -9,6 +9,7 @@ import { Airport } from "src/app/models/airport.model";
 import { NgForm } from "@angular/forms";
 import { User } from "src/app/models/user.model";
 import { AuthService } from "src/app/auth/auth.service";
+import { OtherServicesService } from 'src/app/services/other-services.service';
 
 @Component({
   selector: "app-new-trip",
@@ -48,7 +49,8 @@ export class NewTripPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private newTripService: NewTripService,
-    private authService: AuthService
+    private authService: AuthService,
+    private otherServices: OtherServicesService
   ) {}
 
   ngOnInit() {
@@ -144,9 +146,5 @@ export class NewTripPage implements OnInit {
     )
       .toISOString()
       .split("T")[0];
-  }
-
-  returnFlag(country: Country) {
-    return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
   }
 }

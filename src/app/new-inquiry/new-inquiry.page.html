@@ -49,7 +49,7 @@
                   </ion-title>
                 </ng-template>
                 <ng-template ionicSelectableItemTemplate let-country="item">
-                  <img [src]="returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
+                  <img [src]="this.otherServices.returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
                 </ng-template>
                 <!-- <ng-template ionicSelectableItemTemplate let-country="item">
                   <img [src]="returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}

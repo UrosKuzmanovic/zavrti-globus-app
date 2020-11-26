@@ -87,8 +87,4 @@ export class NewInquiryPage implements OnInit {
       }
     });
   }
-
-  returnFlag(country: Country) {
-    return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
-  }
 }

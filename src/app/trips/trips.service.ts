@@ -7,6 +7,8 @@ import { take, filter, map, tap } from "rxjs/operators";
 import { Trip } from "../models/trip.model";
 import { Country } from "../models/country.model";
 import { environment } from "src/environments/environment";
+import { FetchedCountries } from '../models/modifiedModels/fetchedCountries.model';
+import { Continent } from '../models/continent.model';
 
 @Injectable({
   providedIn: "root",
@@ -106,6 +108,32 @@ export class TripsService {
         }),
         tap((trips) => {
           this._trips.next(trips);
+        })
+      );
+  }
+
+  fetchCountries() {
+    return this.http
+      .get<FetchedCountries[]>(
+        `http://${environment.ip_adress}:${environment.port}/api/countries`
+      )
+      .pipe(
+        map((fetchedCountries) => {
+          const countries: Country[] = [];
+          fetchedCountries.forEach((fetchedCountry) => {
+            countries.push(
+              new Country(
+                fetchedCountry.countryID,
+                fetchedCountry.countryName,
+                new Continent(
+                  fetchedCountry.continentID,
+                  fetchedCountry.continentName
+                ),
+                fetchedCountry.flagSrc
+              )
+            );
+          });
+          return countries;
         })
       );
   }

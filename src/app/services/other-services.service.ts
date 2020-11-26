@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { Country } from '../models/country.model';
 
 @Injectable({
   providedIn: "root",
@@ -34,9 +35,7 @@ export class OtherServicesService {
         },
         {
           text: "Da",
-          handler: () => {
-            
-          },
+          handler: () => {},
         },
       ],
     });
@@ -109,5 +108,9 @@ export class OtherServicesService {
       default:
         return "null";
     }
+  }
+
+  returnFlag(country: Country) {
+    return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
   }
 }

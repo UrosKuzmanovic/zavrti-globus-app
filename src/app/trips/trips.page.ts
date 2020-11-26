@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 
 import { TripsService } from "./trips.service";
 import { Subscription } from "rxjs";
 import { Trip } from "../models/trip.model";
 import { OtherServicesService } from "../services/other-services.service";
+import { Country } from "../models/country.model";
+import { IonicSelectableComponent } from "ionic-selectable";
 
 @Component({
   selector: "app-trips",
@@ -11,13 +13,18 @@ import { OtherServicesService } from "../services/other-services.service";
   styleUrls: ["./trips.page.scss"],
 })
 export class TripsPage implements OnInit, OnDestroy {
-  trips: Trip[];
-  tripsCopy: Trip[];
-  private tripsSub: Subscription;
+  @ViewChild("selectCountry", { static: false })
+  selectCountry: IonicSelectableComponent;
 
+  trips: Trip[];
+  tripsFull: Trip[];
+  tripsSearched: Trip[];
+  countries: Country[];
+  selectedCountries: Country[] = [];
+  search: string = "";
+  private tripsSub: Subscription;
   showSearchBar = false;
   showFilter = false;
-  selectedCountry = "all";
   defaultImg = "../../assets/img/trips/1.jpg";
 
   private webWiew: any = window;
@@ -31,13 +38,16 @@ export class TripsPage implements OnInit, OnDestroy {
     this.tripsSub = this.tripsService.trips.subscribe(
       (trips) => {
         this.trips = trips;
-        this.tripsCopy = trips;
+        this.tripsFull = trips;
       },
       (error) => {
         console.log("Doslo je do greske");
         console.log(error);
       }
     );
+    this.tripsService.fetchCountries().subscribe((countries) => {
+      this.countries = countries;
+    });
     /*this.webWiew.AppCenter.Analytics.trackEvent(
       "All trips",
       {},
@@ -76,10 +86,39 @@ export class TripsPage implements OnInit, OnDestroy {
   }
 
   onSearchChange($event) {
-    this.trips = this.tripsCopy;
-    const search: string = $event.detail.value;
-    this.trips = this.trips.filter(
-      (trip) => trip.city.toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
+    this.search = $event.detail.value;
+    this.filterTrips(this.search, this.selectedCountries);
+  }
+
+  confirm() {
+    this.selectCountry.confirm();
+    this.selectCountry.close();
+    this.filterTrips(this.search, this.selectedCountries);
+  }
+
+  clear() {
+    this.selectCountry.clear();
+    this.selectCountry.close();
+    this.filterTrips(this.search, this.selectedCountries);
+  }
+
+  filterTrips(text: string, countries: Country[]) {
+    this.trips = this.tripsFull;
+    if (countries.length > 0) {
+      this.trips = [];
+      this.tripsFull.forEach((trip) => {
+        this.selectedCountries.forEach((country) => {
+          if (trip.country.countryID === country.countryID) {
+            this.trips.push(trip);
+          }
+        });
+      });
+    }
+    if (text.length > 0) {
+      this.trips = this.trips.filter(
+        (trip) =>
+          trip.city.toLowerCase().indexOf(this.search.toLowerCase()) !== -1
+      );
+    }
   }
 }

@@ -37,7 +37,7 @@
             <ion-row>
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
-                        <img [src]="flagSrc" [alt]="trip.country.flagSrc">
+                        <img [src]="this.otherServices.returnFlag(trip.country)" [alt]="trip.country.flagSrc">
                         <ion-label class="ion-margin-start" style="font-weight: bold;">{{ trip.country.name }}
                         </ion-label>
                     </ion-item>
@@ -47,7 +47,8 @@
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="calendar-outline" class="ion-padding-end"></ion-icon>
-                        <ion-label class="ion-no-margin">{{ this.otherServices.dateFormat(trip.travelDate, trip.returnDate) }}</ion-label>
+                        <ion-label class="ion-no-margin">
+                            {{ this.otherServices.dateFormat(trip.travelDate, trip.returnDate) }}</ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -55,7 +56,8 @@
                 <ion-col size="12" class="ion-no-padding">
                     <ion-item>
                         <ion-icon name="chatbubble-ellipses-outline" class="ion-padding-end"></ion-icon>
-                        <ion-label class="ion-no-margin">{{ this.otherServices.oneDateFormat(trip.postDate) }}</ion-label>
+                        <ion-label class="ion-no-margin">{{ this.otherServices.oneDateFormat(trip.postDate) }}
+                        </ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>

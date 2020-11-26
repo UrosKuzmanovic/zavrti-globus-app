@@ -10,87 +10,48 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar placeholder="Pretraži grad" (ionChange)="onSearchChange($event)" *ngIf="showSearchBar"></ion-searchbar>
+  <ion-searchbar placeholder="Pretraži grad" (ionChange)="onSearchChange($event)" *ngIf="showSearchBar" [value]="search"></ion-searchbar>
 
-  <ion-item *ngIf="showFilter">
-    <ion-label>Filtriraj po državi</ion-label>
-    <!-- treba da ucita drzave iz baze -->
-    <ion-select interface="popover" [(ngModel)]="selectedCountry">
-      <ion-select-option value="all">Sve države</ion-select-option>
-      <ion-select-option value="spa">Španija</ion-select-option>
-      <ion-select-option value="ger">Nemačka</ion-select-option>
-      <ion-select-option value="ita">Italija</ion-select-option>
-      <ion-select-option value="chi">Kina</ion-select-option>
-      <ion-select-option value="egy">Egipat</ion-select-option>
-      <ion-select-option value="gre">Grčka</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <!-- <ion-card routerLink="/trips/trip">
-    <ion-item>
-      <ion-thumbnail>
-        <img src="../../assets/img/trips/1.jpg" />
-      </ion-thumbnail>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-title class="ion-padding-start">Mongolija</ion-title>
-          </ion-col>
-          <ion-col offset="1">
-            <ion-title class="ion-no-padding text-price">300e</ion-title>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-text class="ion-padding-start">20-31. maj 2020.</ion-text>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-    </ion-item>
-  </ion-card>
-
-  <ion-card routerLink="/trips/trip">
-    <ion-item>
-      <ion-thumbnail>
-        <img src="../../assets/img/trips/2.jpg" />
-      </ion-thumbnail>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col>
-            <ion-title class="ion-padding-start">Faro</ion-title>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-text class="ion-padding-start">4-11. jun 2020.</ion-text>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-    </ion-item>
-  </ion-card>
-
-  <ion-card routerLink="/trips/trip">
-    <ion-item>
-      <ion-thumbnail>
-        <img src="../../assets/img/trips/3.jpg" />
-      </ion-thumbnail>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col>
-            <ion-title class="ion-padding-start">Prag</ion-title>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-text class="ion-padding-start">28-31. mart 2020.</ion-text>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-    </ion-item>
-  </ion-card> -->
+  <ion-row *ngIf="countries && showFilter">
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Država</ion-label>
+        <ionic-selectable #selectCountry [(ngModel)]="selectedCountries" [items]="countries" name="country"
+          itemValueField="countryID" itemTextField="name" groupValueField="continent.continentID"
+          groupTextField="continent.name" [isMultiple]="true" [canSearch]="true" searchPlaceholder="Unesite ime države">
+          <ng-template ionicSelectableCloseButtonTemplate>
+            <ion-icon name="close"></ion-icon>
+          </ng-template>
+          <ng-template ionicSelectableSearchFailTemplate>
+            <ion-title style="text-align: center; margin-top: 4vh;">
+              Nije pronađena nijedna država.
+            </ion-title>
+          </ng-template>
+          <ng-template ionicSelectableItemTemplate let-country="item">
+            <img [src]="this.otherServices.returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
+          </ng-template>
+          <ng-template ionicSelectableFooterTemplate>
+            <ion-footer>
+              <ion-toolbar>
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-button (click)="clear()" expand="full">
+                      Obriši sve
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-button (click)="confirm()" expand="full">
+                      Potvrdi
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-toolbar>
+            </ion-footer>
+          </ng-template>
+        </ionic-selectable>
+      </ion-item>
+    </ion-col>
+  </ion-row>
 
   <div *ngFor="let trip of trips">
     <ion-card [routerLink]="['/', 'trips', 'trip', trip.tripID]">
@@ -109,7 +70,8 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-text class="ion-no-padding">{{ this.otherServices.dateFormat(trip.travelDate, trip.returnDate) }}</ion-text>
+                  <ion-text class="ion-no-padding">{{ this.otherServices.dateFormat(trip.travelDate, trip.returnDate) }}
+                  </ion-text>
                 </ion-col>
               </ion-row>
             </ion-col>

@@ -10,7 +10,8 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
-import { CodePush } from "@ionic-native/code-push/ngx"
+import { CodePush } from "@ionic-native/code-push/ngx";
+import { IonicSelectableModule } from "ionic-selectable";
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { CodePush } from "@ionic-native/code-push/ngx"
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    IonicSelectableModule,
   ],
   providers: [
     StatusBar,
