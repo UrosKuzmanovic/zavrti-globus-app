@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -14,7 +15,8 @@ import { NewInquiryPage } from './new-inquiry.page';
     ReactiveFormsModule,
     IonicModule,
     NewInquiryPageRoutingModule,
-    FormsModule
+    FormsModule,
+    IonicSelectableModule
   ],
   declarations: [NewInquiryPage]
 })

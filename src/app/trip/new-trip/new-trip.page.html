@@ -14,12 +14,30 @@
           <ion-label position="floating">Grad</ion-label>
           <ion-input type="text" [(ngModel)]="trip.city" name="city" ngModel required></ion-input>
         </ion-item>
-        <ion-item class="auth-input-item-style">
+        <!-- <ion-item class="auth-input-item-style">
           <ion-label position="floating">Država</ion-label>
           <ion-select [(ngModel)]="trip.country.countryID" interface="action-sheet" name="country" ngModel required>
             <ion-select-option *ngFor="let country of countries" [value]="country.countryID">{{ country.name }}
             </ion-select-option>
           </ion-select>
+        </ion-item> -->
+        <ion-item *ngIf="countries">
+          <ion-label position="floating">Država</ion-label>
+          <ionic-selectable [(ngModel)]="selectedCountry" [items]="countries" name="country" itemValueField="countryID"
+            itemTextField="name" groupValueField="continent.continentID" groupTextField="continent.name"
+            [isMultiple]="false" [canSearch]="true" searchPlaceholder="Unesite ime države">
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableSearchFailTemplate>
+              <ion-title style="text-align: center; margin-top: 4vh;">
+                Nije pronađena nijedna država.
+              </ion-title>
+            </ng-template>
+            <ng-template ionicSelectableItemTemplate let-country="item">
+              <img [src]="returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
+            </ng-template>
+          </ionic-selectable>
         </ion-item>
         <ion-grid class="ion-no-padding">
           <ion-row class="ion-no-padding">

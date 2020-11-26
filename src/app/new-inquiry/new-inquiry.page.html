@@ -22,7 +22,7 @@
             </ion-item>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Država</ion-label>
@@ -30,6 +30,31 @@
                 <ion-select-option *ngFor="let country of countries" [value]="country.countryID">{{ country.name }}
                 </ion-select-option>
               </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row> -->
+        <ion-row *ngIf="countries">
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Država</ion-label>
+              <ionic-selectable [(ngModel)]="selectedCountry" [items]="countries" name="country"
+                itemValueField="countryID" itemTextField="name" groupValueField="continent.continentID"
+                groupTextField="continent.name" [isMultiple]="false" [canSearch]="true" searchPlaceholder="Unesite ime države">
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableSearchFailTemplate>
+                  <ion-title style="text-align: center; margin-top: 4vh;">
+                    Nije pronađena nijedna država.
+                  </ion-title>
+                </ng-template>
+                <ng-template ionicSelectableItemTemplate let-country="item">
+                  <img [src]="returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
+                </ng-template>
+                <!-- <ng-template ionicSelectableItemTemplate let-country="item">
+                  <img [src]="returnFlag(country)" style="margin-right: 2vw;"> {{country.name}}
+                </ng-template> -->
+              </ionic-selectable>
             </ion-item>
           </ion-col>
         </ion-row>

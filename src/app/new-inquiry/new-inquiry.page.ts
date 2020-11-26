@@ -7,6 +7,8 @@ import { Airport } from "../models/airport.model";
 import { User } from "../models/user.model";
 import { AuthService } from "../auth/auth.service";
 import { take } from "rxjs/operators";
+import { OtherServicesService } from "../services/other-services.service";
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: "app-new-inquiry",
@@ -19,25 +21,27 @@ export class NewInquiryPage implements OnInit {
   isAdmin: boolean = false;
 
   countries: Country[];
+  selectedCountry: Country;
 
   constructor(
     private newInquiryService: NewInquiryService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: NavController,
+    private otherServices: OtherServicesService
   ) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.authService.userIsAdmin.subscribe(isAdmin => {
+    this.authService.userIsAdmin.subscribe((isAdmin) => {
       this.isAdmin = isAdmin;
-    })
+    });
     this.newInquiryService.fetchCountries().subscribe((countries) => {
       this.countries = countries;
     });
   }
 
   onSubmit(f: NgForm) {
-    console.log(f);
     this.authService.userID.pipe(take(1)).subscribe((userID) => {
       if (!userID) {
         return;
@@ -47,7 +51,7 @@ export class NewInquiryPage implements OnInit {
             new Trip(
               null,
               f.value.city.trim(),
-              new Country(f.value.country, null, null, null),
+              new Country(this.selectedCountry.countryID, null, null, null),
               f.value.price,
               f.value.travelDate,
               f.value.returnDate,
@@ -65,12 +69,26 @@ export class NewInquiryPage implements OnInit {
               new User(userID, null, null, null, null, null, null)
             )
           )
-          .subscribe(() => {
-            console.log("Uspesno poslao");
-            // alert da je poslato
-            // redirect na pocetnu
-          });
+          .subscribe(
+            () => {
+              this.otherServices.showAlert(
+                "Slanje upita",
+                "Upit je uspešno poslat!"
+              );
+              this.router.navigateForward("/home");
+            },
+            (err) => {
+              this.otherServices.showAlert(
+                "Slanje upita",
+                "Došlo je do greške prilikom slanja upita."
+              );
+            }
+          );
       }
     });
+  }
+
+  returnFlag(country: Country) {
+    return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
   }
 }

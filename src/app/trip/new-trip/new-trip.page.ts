@@ -145,4 +145,8 @@ export class NewTripPage implements OnInit {
       .toISOString()
       .split("T")[0];
   }
+
+  returnFlag(country: Country) {
+    return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
+  }
 }
