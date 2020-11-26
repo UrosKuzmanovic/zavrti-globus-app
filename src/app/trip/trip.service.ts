@@ -116,4 +116,19 @@ export class TripService {
       `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=7ce886f7244f0f10b2adb7f8841dab38&units=metric&lang=sr`
     );
   }
+
+  deleteTrip(trip: Trip){
+    const options = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+      }),
+      body: {
+        tripID: trip.tripID,
+      },
+    };
+    return this.http.delete(
+      `http://${environment.ip_adress}:${environment.port}/api/trips/delete-trip`,
+      options
+    );
+  }
 }

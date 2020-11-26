@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { TripService } from "../trip/trip.service";
 import { Trip } from "../models/trip.model";
 import { AuthService } from "../auth/auth.service";
+import { OtherServicesService } from "../services/other-services.service";
 
 @Component({
   selector: "app-favorite-trips",
@@ -19,7 +20,8 @@ export class FavoriteTripsPage implements OnInit, OnDestroy {
   constructor(
     private favoriteTripsService: FavoriteTripsService,
     private tripServce: TripService,
-    private authService: AuthService
+    private authService: AuthService,
+    private otherServices: OtherServicesService
   ) {}
 
   ngOnInit() {
@@ -49,66 +51,5 @@ export class FavoriteTripsPage implements OnInit, OnDestroy {
         console.log(`uklonio ${tripID}`);
       });
     });
-  }
-
-  dateFormat(dateFrom: Date, dateTo: Date) {
-    var dayFrom = dateFrom.getUTCDate();
-    var monthFrom = dateFrom.getUTCMonth() + 1;
-    var yearFrom = dateFrom.getUTCFullYear();
-
-    var dayTo = dateTo.getUTCDate();
-    var monthTo = dateTo.getUTCMonth() + 1;
-    var yearTo = dateTo.getUTCFullYear();
-
-    if (yearFrom === yearTo) {
-      if (monthFrom === monthTo) {
-        if (dayFrom === dayTo) {
-          return `${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
-        } else {
-          return `${dayFrom}-${dayTo}. ${this.monthFormat(
-            monthFrom
-          )} ${yearFrom}.`;
-        }
-      } else {
-        return `${dayFrom}. ${this.monthFormat(
-          monthFrom
-        )} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearFrom}.`;
-      }
-    } else {
-      return `${dayFrom}. ${this.monthFormat(
-        monthFrom
-      )} ${yearFrom} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearTo}.`;
-    }
-  }
-
-  monthFormat(month: number) {
-    switch (month) {
-      case 1:
-        return "jan";
-      case 2:
-        return "feb";
-      case 3:
-        return "mar";
-      case 4:
-        return "apr";
-      case 5:
-        return "maj";
-      case 6:
-        return "jun";
-      case 7:
-        return "jul";
-      case 8:
-        return "avg";
-      case 9:
-        return "sep";
-      case 10:
-        return "okt";
-      case 11:
-        return "nov";
-      case 12:
-        return "dec";
-      default:
-        return "null";
-    }
   }
 }

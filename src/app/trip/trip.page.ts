@@ -6,6 +6,7 @@ import { TripService } from "./trip.service";
 import { Subscription } from "rxjs";
 import { FavoriteTripsService } from "../favorite-trips/favorite-trips.service";
 import { AuthService } from "../auth/auth.service";
+import { OtherServicesService } from "../services/other-services.service";
 
 @Component({
   selector: "app-trip",
@@ -38,6 +39,7 @@ export class TripPage implements OnInit, OnDestroy {
     private tripService: TripService,
     private favoriteTripsService: FavoriteTripsService,
     private authService: AuthService,
+    private otherServices: OtherServicesService,
     private alertCtrl: AlertController
   ) {}
 
@@ -126,75 +128,6 @@ export class TripPage implements OnInit, OnDestroy {
     this.favorite = !this.favorite;
   }
 
-  dateFormat(dateFrom: Date, dateTo: Date) {
-    var dayFrom = dateFrom.getUTCDate();
-    var monthFrom = dateFrom.getUTCMonth() + 1;
-    var yearFrom = dateFrom.getUTCFullYear();
-
-    var dayTo = dateTo.getUTCDate();
-    var monthTo = dateTo.getUTCMonth() + 1;
-    var yearTo = dateTo.getUTCFullYear();
-
-    if (yearFrom === yearTo) {
-      if (monthFrom === monthTo) {
-        if (dayFrom === dayTo) {
-          return `${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
-        } else {
-          return `${dayFrom}-${dayTo}. ${this.monthFormat(
-            monthFrom
-          )} ${yearFrom}.`;
-        }
-      } else {
-        return `${dayFrom}. ${this.monthFormat(
-          monthFrom
-        )} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearFrom}.`;
-      }
-    } else {
-      return `${dayFrom}. ${this.monthFormat(
-        monthFrom
-      )} ${yearFrom} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearTo}.`;
-    }
-  }
-
-  oneDateFormat(postFrom: Date) {
-    var dayFrom = postFrom.getUTCDate();
-    var monthFrom = postFrom.getUTCMonth() + 1;
-    var yearFrom = postFrom.getUTCFullYear();
-
-    return `${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
-  }
-
-  monthFormat(month: number) {
-    switch (month) {
-      case 1:
-        return "jan";
-      case 2:
-        return "feb";
-      case 3:
-        return "mar";
-      case 4:
-        return "apr";
-      case 5:
-        return "maj";
-      case 6:
-        return "jun";
-      case 7:
-        return "jul";
-      case 8:
-        return "avg";
-      case 9:
-        return "sep";
-      case 10:
-        return "okt";
-      case 11:
-        return "nov";
-      case 12:
-        return "dec";
-      default:
-        return "null";
-    }
-  }
-
   addToFavorites() {
     this.authService.userID.subscribe((userID) => {
       this.tripService.addToFavorites(userID, this.tripID).subscribe(() => {
@@ -230,5 +163,43 @@ export class TripPage implements OnInit, OnDestroy {
 
   editTrip() {
     this.navCtrl.navigateForward(`/trips/trip/new-trip/${this.tripID}`);
+  }
+
+  deleteTrip() {
+    console.log("delete");
+
+    this.alertCtrl
+      .create({
+        message: "Da li ste sigurni da želite da obrišete ovo putovanje?",
+        buttons: [
+          {
+            text: "Ne",
+            role: "cancel",
+          },
+          {
+            text: "Da",
+            handler: () => {
+              this.tripService.deleteTrip(this.trip).subscribe(
+                () => {
+                  this.otherServices.showAlert(
+                    "Brisanje putovanja",
+                    "Putovanje je uspešno obrisano!"
+                  );
+                  this.navCtrl.pop();
+                },
+                (err) => {
+                  this.otherServices.showAlert(
+                    "Brisanje putovanja",
+                    "Došlo je do greške prilikom brisanja purovanja"
+                  );
+                }
+              );
+            },
+          },
+        ],
+      })
+      .then((alertEl) => {
+        return alertEl.present();
+      });
   }
 }

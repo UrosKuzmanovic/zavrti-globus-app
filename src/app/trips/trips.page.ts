@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { TripsService } from "./trips.service";
 import { Subscription } from "rxjs";
 import { Trip } from "../models/trip.model";
+import { OtherServicesService } from "../services/other-services.service";
 
 @Component({
   selector: "app-trips",
@@ -21,7 +22,10 @@ export class TripsPage implements OnInit, OnDestroy {
 
   private webWiew: any = window;
 
-  constructor(private tripsService: TripsService) {}
+  constructor(
+    private tripsService: TripsService,
+    private otherServices: OtherServicesService
+  ) {}
 
   ngOnInit() {
     this.tripsSub = this.tripsService.trips.subscribe(
@@ -69,67 +73,6 @@ export class TripsPage implements OnInit, OnDestroy {
   toggleFilter() {
     this.showFilter = !this.showFilter;
     this.showSearchBar = false;
-  }
-
-  dateFormat(dateFrom: Date, dateTo: Date) {
-    var dayFrom = dateFrom.getUTCDate();
-    var monthFrom = dateFrom.getUTCMonth() + 1;
-    var yearFrom = dateFrom.getUTCFullYear();
-
-    var dayTo = dateTo.getUTCDate();
-    var monthTo = dateTo.getUTCMonth() + 1;
-    var yearTo = dateTo.getUTCFullYear();
-
-    if (yearFrom === yearTo) {
-      if (monthFrom === monthTo) {
-        if (dayFrom === dayTo) {
-          return `${dayFrom}. ${this.monthFormat(monthFrom)} ${yearFrom}.`;
-        } else {
-          return `${dayFrom}-${dayTo}. ${this.monthFormat(
-            monthFrom
-          )} ${yearFrom}.`;
-        }
-      } else {
-        return `${dayFrom}. ${this.monthFormat(
-          monthFrom
-        )} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearFrom}.`;
-      }
-    } else {
-      return `${dayFrom}. ${this.monthFormat(
-        monthFrom
-      )} ${yearFrom} - ${dayTo}. ${this.monthFormat(monthTo)} ${yearTo}.`;
-    }
-  }
-
-  monthFormat(month: number) {
-    switch (month) {
-      case 1:
-        return "jan";
-      case 2:
-        return "feb";
-      case 3:
-        return "mar";
-      case 4:
-        return "apr";
-      case 5:
-        return "maj";
-      case 6:
-        return "jun";
-      case 7:
-        return "jul";
-      case 8:
-        return "avg";
-      case 9:
-        return "sep";
-      case 10:
-        return "okt";
-      case 11:
-        return "nov";
-      case 12:
-        return "dec";
-      default:
-        return "null";
-    }
   }
 
   onSearchChange($event) {
