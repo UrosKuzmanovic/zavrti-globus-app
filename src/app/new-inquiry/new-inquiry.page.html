@@ -39,7 +39,7 @@
               <ion-label position="floating">Država</ion-label>
               <ionic-selectable [(ngModel)]="selectedCountry" [items]="countries" name="country"
                 itemValueField="countryID" itemTextField="name" groupValueField="continent.continentID"
-                groupTextField="continent.name" [isMultiple]="false" [canSearch]="true" searchPlaceholder="Unesite ime države">
+                groupTextField="continent.name" [isMultiple]="false" canSearch="true" (onSearch)="searchCountries($event)" searchPlaceholder="Unesite ime države">
                 <ng-template ionicSelectableCloseButtonTemplate>
                   <ion-icon name="close"></ion-icon>
                 </ng-template>

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { Country } from '../models/country.model';
+import { Country } from "../models/country.model";
 
 @Injectable({
   providedIn: "root",
@@ -112,5 +112,23 @@ export class OtherServicesService {
 
   returnFlag(country: Country) {
     return `https://www.countryflags.io/${country.flagSrc}/flat/24.png`;
+  }
+
+  convertLatinicWords(word: string) {
+    var letters = word.toLocaleLowerCase().split("");
+    for (let i = 0; i < letters.length; i++) {
+      if (letters[i] === "č") {
+        letters[i] = "c";
+      } else if (letters[i] === "ć") {
+        letters[i] = "c";
+      } else if (letters[i] === "š") {
+        letters[i] = "s";
+      } else if (letters[i] === "đ") {
+        letters[i] = "dj";
+      } else if (letters[i] === "ž") {
+        letters[i] = "z";
+      }
+    }
+    return letters.join("");
   }
 }

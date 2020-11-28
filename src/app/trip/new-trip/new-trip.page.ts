@@ -9,7 +9,8 @@ import { Airport } from "src/app/models/airport.model";
 import { NgForm } from "@angular/forms";
 import { User } from "src/app/models/user.model";
 import { AuthService } from "src/app/auth/auth.service";
-import { OtherServicesService } from 'src/app/services/other-services.service';
+import { OtherServicesService } from "src/app/services/other-services.service";
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 @Component({
   selector: "app-new-trip",
@@ -18,6 +19,10 @@ import { OtherServicesService } from 'src/app/services/other-services.service';
 })
 export class NewTripPage implements OnInit {
   @ViewChild("form", { static: false }) form: NgForm;
+
+  @ViewChild("selectCountry", { static: false })
+  selectCountry: IonicSelectableComponent;
+  
   tripID: number;
   trip: Trip = new Trip(
     null,
@@ -146,5 +151,28 @@ export class NewTripPage implements OnInit {
     )
       .toISOString()
       .split("T")[0];
+  }
+
+  searchCountries(event: {
+    component: IonicSelectableComponent;
+    text: string;
+  }) {
+    let text = this.otherServices.convertLatinicWords(event.text.trim());
+
+    event.component.startSearch();
+
+    if (!text) {
+      event.component.items = this.countries;
+      event.component.endSearch();
+      return;
+    }
+
+    event.component.items = this.countries.filter((country) => {
+      return (
+        this.otherServices.convertLatinicWords(country.name).indexOf(text) !==
+        -1
+      );
+    });
+    event.component.endSearch();
   }
 }

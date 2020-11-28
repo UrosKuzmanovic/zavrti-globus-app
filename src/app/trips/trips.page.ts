@@ -21,7 +21,7 @@ export class TripsPage implements OnInit, OnDestroy {
   tripsSearched: Trip[];
   countries: Country[];
   selectedCountries: Country[] = [];
-  search: string = "";
+  searchWord: string = "";
   private tripsSub: Subscription;
   showSearchBar = false;
   showFilter = false;
@@ -86,24 +86,25 @@ export class TripsPage implements OnInit, OnDestroy {
   }
 
   onSearchChange($event) {
-    this.search = $event.detail.value;
-    this.filterTrips(this.search, this.selectedCountries);
+    this.searchWord = $event.detail.value;
+    this.filterTrips(this.searchWord, this.selectedCountries);
   }
 
   confirm() {
     this.selectCountry.confirm();
     this.selectCountry.close();
-    this.filterTrips(this.search, this.selectedCountries);
+    this.filterTrips(this.searchWord, this.selectedCountries);
   }
 
   clear() {
     this.selectCountry.clear();
     this.selectCountry.close();
-    this.filterTrips(this.search, this.selectedCountries);
+    this.filterTrips(this.searchWord, this.selectedCountries);
   }
 
   filterTrips(text: string, countries: Country[]) {
     this.trips = this.tripsFull;
+    text = this.otherServices.convertLatinicWords(text);
     if (countries.length > 0) {
       this.trips = [];
       this.tripsFull.forEach((trip) => {
@@ -117,8 +118,31 @@ export class TripsPage implements OnInit, OnDestroy {
     if (text.length > 0) {
       this.trips = this.trips.filter(
         (trip) =>
-          trip.city.toLowerCase().indexOf(this.search.toLowerCase()) !== -1
+          this.otherServices.convertLatinicWords(trip.city).indexOf(text) !== -1
       );
     }
+  }
+
+  searchCountries(event: {
+    component: IonicSelectableComponent;
+    text: string;
+  }) {
+    let text = this.otherServices.convertLatinicWords(event.text.trim());
+
+    event.component.startSearch();
+
+    if (!text) {
+      event.component.items = this.countries;
+      event.component.endSearch();
+      return;
+    }
+
+    event.component.items = this.countries.filter((country) => {
+      return (
+        this.otherServices.convertLatinicWords(country.name).indexOf(text) !==
+        -1
+      );
+    });
+    event.component.endSearch();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { NewInquiryService } from "./new-inquiry.service";
 import { Trip } from "../models/trip.model";
@@ -8,7 +8,8 @@ import { User } from "../models/user.model";
 import { AuthService } from "../auth/auth.service";
 import { take } from "rxjs/operators";
 import { OtherServicesService } from "../services/other-services.service";
-import { NavController } from '@ionic/angular';
+import { NavController } from "@ionic/angular";
+import { IonicSelectableComponent } from "ionic-selectable";
 
 @Component({
   selector: "app-new-inquiry",
@@ -16,6 +17,9 @@ import { NavController } from '@ionic/angular';
   styleUrls: ["./new-inquiry.page.scss"],
 })
 export class NewInquiryPage implements OnInit {
+  @ViewChild("selectCountry", { static: false })
+  selectCountry: IonicSelectableComponent;
+
   minDate: string = new Date().toISOString();
   maxDate: any = new Date().getFullYear() + 3;
   isAdmin: boolean = false;
@@ -86,5 +90,28 @@ export class NewInquiryPage implements OnInit {
           );
       }
     });
+  }
+
+  searchCountries(event: {
+    component: IonicSelectableComponent;
+    text: string;
+  }) {
+    let text = this.otherServices.convertLatinicWords(event.text.trim());
+
+    event.component.startSearch();
+
+    if (!text) {
+      event.component.items = this.countries;
+      event.component.endSearch();
+      return;
+    }
+
+    event.component.items = this.countries.filter((country) => {
+      return (
+        this.otherServices.convertLatinicWords(country.name).indexOf(text) !==
+        -1
+      );
+    });
+    event.component.endSearch();
   }
 }

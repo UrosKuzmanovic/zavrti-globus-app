@@ -10,7 +10,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar placeholder="Pretraži grad" (ionChange)="onSearchChange($event)" *ngIf="showSearchBar" [value]="search"></ion-searchbar>
+  <ion-searchbar placeholder="Pretraži grad" (ionChange)="onSearchChange($event)" *ngIf="showSearchBar"
+    [value]="search"></ion-searchbar>
 
   <ion-row *ngIf="countries && showFilter">
     <ion-col>
@@ -18,7 +19,8 @@
         <ion-label position="floating">Država</ion-label>
         <ionic-selectable #selectCountry [(ngModel)]="selectedCountries" [items]="countries" name="country"
           itemValueField="countryID" itemTextField="name" groupValueField="continent.continentID"
-          groupTextField="continent.name" [isMultiple]="true" [canSearch]="true" searchPlaceholder="Unesite ime države">
+          groupTextField="continent.name" [isMultiple]="true" canSearch="true" (onSearch)="searchCountries($event)"
+          searchPlaceholder="Unesite ime države">
           <ng-template ionicSelectableCloseButtonTemplate>
             <ion-icon name="close"></ion-icon>
           </ng-template>
